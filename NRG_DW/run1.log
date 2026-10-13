@@ -1,0 +1,324 @@
+DEBUG: Using PENTAHO_JAVA_HOME
+DEBUG: _PENTAHO_JAVA_HOME=C:\Program Files\Microsoft\jdk-17.0.19.10-hotspot
+DEBUG: _PENTAHO_JAVA=C:\Program Files\Microsoft\jdk-17.0.19.10-hotspot\bin\java.exe
+
+C:\pdi\data-integration>"C:\Program Files\Microsoft\jdk-17.0.19.10-hotspot\bin\java.exe"  --add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.file=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.ftp=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.http=ALL-UNNAMED --add-opens=java.base/sun.net.www.protocol.https=ALL-UNNAMED --add-opens=java.base/sun.reflect.misc=ALL-UNNAMED --add-opens=java.management/javax.management=ALL-UNNAMED --add-opens=java.management/javax.management.openmbean=ALL-UNNAMED --add-opens=java.naming/com.sun.jndi.ldap=ALL-UNNAMED --add-opens=java.base/java.math=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED  "-Xms1024m" "-Xmx2048m" "-Djava.library.path=libswt\win64;native-lib\win64;..\native-lib\win64;/bin" -Djava.locale.providers=COMPAT,SPI "-DKETTLE_HOME=C:\pdi\kettle_home" "-DKETTLE_REPOSITORY=" "-DKETTLE_USER=" "-DKETTLE_PASSWORD=" "-DKETTLE_PLUGIN_PACKAGES=" "-DKETTLE_LOG_SIZE_LIMIT=" "-DKETTLE_JNDI_ROOT=" "-Dorg.eclipse.swt.browser.DefaultType=edge" -jar launcher\launcher.jar -lib ..\libswt\win64;native-lib\win64;..\native-lib\win64  -main org.pentaho.di.kitchen.Kitchen -initialDir "G:\My Drive\File Kuliah\Semester 7\data-warehouse\assignment\tugas kelompok\Data-20261013T041524Z-1-001"\ /file:NRG_DW\pentaho\J_NRG_DW_Main.kjb /level:Basic 
+2026-10-13 12:52:23.544 - Kitchen - Logging is at level : Basic
+2026-10-13 12:52:23.590 - Kitchen - Start of run.
+2026-10-13 12:52:27.469 - J_NRG_DW_Main - Start of job execution
+2026-10-13 12:52:27.724 - J_NRG_DW_Main - Starting entry [Reset DW (hapus staging, dimensi, fakta)]
+2026-10-13 12:52:29.138 - J_NRG_DW_Main - Starting entry [T01 Staging S4 ERP + ref_kota]
+2026-10-13 12:52:29.302 - T01 Staging S4 ERP + ref_kota - Using run configuration [Pentaho local]
+2026-10-13 12:52:29.338 - Carte - Installing timer to purge stale objects after 1440 minutes.
+2026-10-13 12:52:29.343 - T01_stg_s4_erp_ref_kota - Dispatching started for transformation [T01_stg_s4_erp_ref_kota]
+2026-10-13 12:52:29.396 - stg_erp_produk.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:29.398 - stg_ref_kota.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:29.396 - stg_erp_pemasok.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:29.483 - CSV ref_kota.0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/ref_kota.csv
+2026-10-13 12:52:29.483 - CSV produk_master (S4).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S4_ERP_MASTER/produk_master.csv
+2026-10-13 12:52:29.483 - CSV supplier_master (S4).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S4_ERP_MASTER/supplier_master.csv
+2026-10-13 12:52:29.540 - CSV supplier_master (S4).0 - Finished processing (I=11, O=0, R=0, W=10, U=1, E=0)
+2026-10-13 12:52:29.542 - CSV ref_kota.0 - Finished processing (I=27, O=0, R=0, W=26, U=1, E=0)
+2026-10-13 12:52:29.553 - CSV produk_master (S4).0 - Finished processing (I=80, O=0, R=0, W=79, U=1, E=0)
+2026-10-13 12:52:29.584 - stg_erp_pemasok.0 - Finished processing (I=0, O=10, R=10, W=10, U=0, E=0)
+2026-10-13 12:52:29.636 - Bersihkan produk ERP.0 - Optimization level set to 9.
+2026-10-13 12:52:29.636 - Normalkan alias kota.0 - Optimization level set to 9.
+2026-10-13 12:52:29.920 - Normalkan alias kota.0 - Finished processing (I=0, O=0, R=26, W=26, U=0, E=0)
+2026-10-13 12:52:29.924 - Urutkan alias.0 - Finished processing (I=0, O=0, R=26, W=26, U=0, E=0)
+2026-10-13 12:52:29.929 - Hapus alias ganda.0 - Finished processing (I=0, O=0, R=26, W=25, U=0, E=0)
+2026-10-13 12:52:29.959 - stg_ref_kota.0 - Finished processing (I=0, O=25, R=25, W=25, U=0, E=0)
+2026-10-13 12:52:29.986 - Bersihkan produk ERP.0 - Finished processing (I=0, O=0, R=79, W=79, U=0, E=0)
+2026-10-13 12:52:30.097 - stg_erp_produk.0 - Finished processing (I=0, O=79, R=79, W=79, U=0, E=0)
+2026-10-13 12:52:30.107 - J_NRG_DW_Main - Starting entry [T02 Staging S5 Kampanye]
+2026-10-13 12:52:30.179 - T02 Staging S5 Kampanye - Using run configuration [Pentaho local]
+2026-10-13 12:52:30.183 - T02_stg_s5_kampanye - Dispatching started for transformation [T02_stg_s5_kampanye]
+2026-10-13 12:52:30.195 - err_s5_kampanye.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:30.195 - stg_s5_kampanye.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:30.215 - CSV kampanye (S5).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S5_MKT_SHEET/kampanye_marketing.csv
+2026-10-13 12:52:30.225 - Validasi dan normalisasi.0 - Optimization level set to 9.
+2026-10-13 12:52:30.228 - CSV kampanye (S5).0 - Finished processing (I=20, O=0, R=0, W=19, U=1, E=0)
+2026-10-13 12:52:30.288 - Validasi dan normalisasi.0 - Finished processing (I=0, O=0, R=19, W=19, U=0, E=0)
+2026-10-13 12:52:30.291 - Baris valid?.0 - Finished processing (I=0, O=0, R=19, W=19, U=0, E=0)
+2026-10-13 12:52:30.306 - Baris error?.0 - Finished processing (I=0, O=0, R=2, W=2, U=0, E=0)
+2026-10-13 12:52:30.306 - Urutkan kampanye.0 - Finished processing (I=0, O=0, R=17, W=17, U=0, E=0)
+2026-10-13 12:52:30.322 - Hapus duplikat persis.0 - Finished processing (I=0, O=0, R=17, W=15, U=0, E=0)
+2026-10-13 12:52:30.324 - Buang baris kosong.0 - Finished processing (I=0, O=0, R=1, W=1, U=0, E=0)
+2026-10-13 12:52:30.337 - err_s5_kampanye.0 - Finished processing (I=0, O=1, R=1, W=1, U=0, E=0)
+2026-10-13 12:52:30.345 - stg_s5_kampanye.0 - Finished processing (I=0, O=15, R=15, W=15, U=0, E=0)
+2026-10-13 12:52:30.348 - J_NRG_DW_Main - Starting entry [T03 Staging S2 Master (toko, member)]
+2026-10-13 12:52:30.410 - T03 Staging S2 Master (toko, member) - Using run configuration [Pentaho local]
+2026-10-13 12:52:30.413 - T03_stg_s2_master - Dispatching started for transformation [T03_stg_s2_master]
+2026-10-13 12:52:30.424 - stg_s2_store.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:30.425 - stg_s2_member.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:30.685 - CSV member (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/member.csv
+2026-10-13 12:52:30.685 - CSV store_master (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/store_master.csv
+2026-10-13 12:52:30.697 - Siapkan toko.0 - Optimization level set to 9.
+2026-10-13 12:52:30.702 - CSV store_master (S2).0 - Finished processing (I=43, O=0, R=0, W=42, U=1, E=0)
+2026-10-13 12:52:30.717 - Normalkan HP dan kota member.0 - Optimization level set to 9.
+2026-10-13 12:52:30.745 - Siapkan toko.0 - Finished processing (I=0, O=0, R=42, W=42, U=0, E=0)
+2026-10-13 12:52:30.766 - CSV member (S2).0 - Finished processing (I=601, O=0, R=0, W=600, U=1, E=0)
+2026-10-13 12:52:30.798 - Kota toko final.0 - Optimization level set to 9.
+2026-10-13 12:52:30.800 - Kota member final.0 - Optimization level set to 9.
+2026-10-13 12:52:30.802 - Kota baku toko.0 - Finished processing (I=25, O=0, R=42, W=42, U=0, E=0)
+2026-10-13 12:52:30.825 - Kota toko final.0 - Finished processing (I=0, O=0, R=42, W=42, U=0, E=0)
+2026-10-13 12:52:30.867 - stg_s2_store.0 - Finished processing (I=0, O=42, R=42, W=42, U=0, E=0)
+2026-10-13 12:52:30.954 - Normalkan HP dan kota member.0 - Finished processing (I=0, O=0, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:30.962 - Kota baku member.0 - Finished processing (I=25, O=0, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:30.969 - Kota member final.0 - Finished processing (I=0, O=0, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:31.354 - stg_s2_member.0 - Finished processing (I=0, O=600, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:31.358 - J_NRG_DW_Main - Starting entry [T04 Staging S2 Transaksi POS]
+2026-10-13 12:52:31.419 - T04 Staging S2 Transaksi POS - Using run configuration [Pentaho local]
+2026-10-13 12:52:31.422 - T04_stg_s2_pos_trx - Dispatching started for transformation [T04_stg_s2_pos_trx]
+2026-10-13 12:52:31.432 - rej_s2_void.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:31.434 - stg_s2_trx_line.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:31.432 - stg_s2_trx_header.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:31.435 - stg_s2_trx_payment.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:31.695 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS01.csv
+2026-10-13 12:52:31.695 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS01.csv
+2026-10-13 12:52:31.700 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS01.csv
+2026-10-13 12:52:31.712 - Konversi payment.0 - Optimization level set to 9.
+2026-10-13 12:52:31.719 - Konversi line.0 - Optimization level set to 9.
+2026-10-13 12:52:31.711 - Konversi header.0 - Optimization level set to 9.
+2026-10-13 12:52:31.729 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS02.csv
+2026-10-13 12:52:31.734 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS02.csv
+2026-10-13 12:52:31.734 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS02.csv
+2026-10-13 12:52:31.767 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS03.csv
+2026-10-13 12:52:31.814 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS03.csv
+2026-10-13 12:52:31.814 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS03.csv
+2026-10-13 12:52:31.821 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS04.csv
+2026-10-13 12:52:31.859 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS04.csv
+2026-10-13 12:52:31.859 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS04.csv
+2026-10-13 12:52:31.860 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS05.csv
+2026-10-13 12:52:31.884 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS06.csv
+2026-10-13 12:52:31.914 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS05.csv
+2026-10-13 12:52:31.914 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS05.csv
+2026-10-13 12:52:31.925 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS07.csv
+2026-10-13 12:52:31.947 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS08.csv
+2026-10-13 12:52:31.966 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS06.csv
+2026-10-13 12:52:31.967 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS06.csv
+2026-10-13 12:52:31.980 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS09.csv
+2026-10-13 12:52:32.001 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS10.csv
+2026-10-13 12:52:32.015 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS07.csv
+2026-10-13 12:52:32.023 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS07.csv
+2026-10-13 12:52:32.051 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS11.csv
+2026-10-13 12:52:32.081 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS08.csv
+2026-10-13 12:52:32.092 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS12.csv
+2026-10-13 12:52:32.094 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS08.csv
+2026-10-13 12:52:32.117 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS13.csv
+2026-10-13 12:52:32.134 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS09.csv
+2026-10-13 12:52:32.137 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS09.csv
+2026-10-13 12:52:32.144 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS14.csv
+2026-10-13 12:52:32.159 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS10.csv
+2026-10-13 12:52:32.169 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS15.csv
+2026-10-13 12:52:32.179 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS10.csv
+2026-10-13 12:52:32.192 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS16.csv
+2026-10-13 12:52:32.214 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS11.csv
+2026-10-13 12:52:32.229 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS17.csv
+2026-10-13 12:52:32.238 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS11.csv
+2026-10-13 12:52:32.271 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS18.csv
+2026-10-13 12:52:32.273 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS12.csv
+2026-10-13 12:52:32.299 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS12.csv
+2026-10-13 12:52:32.318 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS19.csv
+2026-10-13 12:52:32.325 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS13.csv
+2026-10-13 12:52:32.356 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS14.csv
+2026-10-13 12:52:32.356 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS13.csv
+2026-10-13 12:52:32.367 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS20.csv
+2026-10-13 12:52:32.401 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS21.csv
+2026-10-13 12:52:32.422 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS14.csv
+2026-10-13 12:52:32.424 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS15.csv
+2026-10-13 12:52:32.447 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS22.csv
+2026-10-13 12:52:32.459 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS16.csv
+2026-10-13 12:52:32.481 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS23.csv
+2026-10-13 12:52:32.483 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS15.csv
+2026-10-13 12:52:32.499 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS17.csv
+2026-10-13 12:52:32.510 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS24.csv
+2026-10-13 12:52:32.516 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS16.csv
+2026-10-13 12:52:32.541 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS25.csv
+2026-10-13 12:52:32.557 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS18.csv
+2026-10-13 12:52:32.558 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS17.csv
+2026-10-13 12:52:32.574 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS26.csv
+2026-10-13 12:52:32.593 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS27.csv
+2026-10-13 12:52:32.605 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS18.csv
+2026-10-13 12:52:32.608 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS19.csv
+2026-10-13 12:52:32.617 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS28.csv
+2026-10-13 12:52:32.637 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS29.csv
+2026-10-13 12:52:32.650 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS20.csv
+2026-10-13 12:52:32.650 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS19.csv
+2026-10-13 12:52:32.677 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS30.csv
+2026-10-13 12:52:32.693 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS21.csv
+2026-10-13 12:52:32.693 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS20.csv
+2026-10-13 12:52:32.704 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS31.csv
+2026-10-13 12:52:32.736 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS22.csv
+2026-10-13 12:52:32.739 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS21.csv
+2026-10-13 12:52:32.739 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS32.csv
+2026-10-13 12:52:32.758 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS33.csv
+2026-10-13 12:52:32.777 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS23.csv
+2026-10-13 12:52:32.779 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS34.csv
+2026-10-13 12:52:32.780 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS22.csv
+2026-10-13 12:52:32.795 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS35.csv
+2026-10-13 12:52:32.818 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS36.csv
+2026-10-13 12:52:32.821 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS24.csv
+2026-10-13 12:52:32.824 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS23.csv
+2026-10-13 12:52:32.857 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS25.csv
+2026-10-13 12:52:32.857 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS24.csv
+2026-10-13 12:52:32.875 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS37.csv
+2026-10-13 12:52:32.877 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS26.csv
+2026-10-13 12:52:32.895 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS38.csv
+2026-10-13 12:52:32.895 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS25.csv
+2026-10-13 12:52:32.916 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS39.csv
+2026-10-13 12:52:32.916 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS27.csv
+2026-10-13 12:52:32.934 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS26.csv
+2026-10-13 12:52:32.951 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS28.csv
+2026-10-13 12:52:32.951 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS40.csv
+2026-10-13 12:52:32.971 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS41.csv
+2026-10-13 12:52:32.974 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS27.csv
+2026-10-13 12:52:32.992 - CSV trx_payment_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_payment_TS42.csv
+2026-10-13 12:52:32.993 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS28.csv
+2026-10-13 12:52:32.994 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS29.csv
+2026-10-13 12:52:33.005 - CSV trx_payment_TSxx (S2).0 - Finished processing (I=6735, O=0, R=0, W=6693, U=42, E=0)
+2026-10-13 12:52:33.010 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS30.csv
+2026-10-13 12:52:33.013 - Konversi payment.0 - Finished processing (I=0, O=0, R=6693, W=6693, U=0, E=0)
+2026-10-13 12:52:33.027 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS29.csv
+2026-10-13 12:52:33.043 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS31.csv
+2026-10-13 12:52:33.044 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS30.csv
+2026-10-13 12:52:33.079 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS32.csv
+2026-10-13 12:52:33.088 - Urutkan per trx.0 - Finished processing (I=0, O=0, R=6693, W=6693, U=0, E=0)
+2026-10-13 12:52:33.090 - Flag SPLIT.0 - Optimization level set to 9.
+2026-10-13 12:52:33.091 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS31.csv
+2026-10-13 12:52:33.117 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS33.csv
+2026-10-13 12:52:33.145 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS32.csv
+2026-10-13 12:52:33.166 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS34.csv
+2026-10-13 12:52:33.167 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS33.csv
+2026-10-13 12:52:33.190 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS35.csv
+2026-10-13 12:52:33.207 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS34.csv
+2026-10-13 12:52:33.234 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS36.csv
+2026-10-13 12:52:33.234 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS35.csv
+2026-10-13 12:52:33.296 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS36.csv
+2026-10-13 12:52:33.302 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS37.csv
+2026-10-13 12:52:33.329 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS38.csv
+2026-10-13 12:52:33.356 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS37.csv
+2026-10-13 12:52:33.369 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS39.csv
+2026-10-13 12:52:33.383 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS38.csv
+2026-10-13 12:52:33.414 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS39.csv
+2026-10-13 12:52:33.417 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS40.csv
+2026-10-13 12:52:33.445 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS41.csv
+2026-10-13 12:52:33.458 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS40.csv
+2026-10-13 12:52:33.484 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS41.csv
+2026-10-13 12:52:33.490 - CSV trx_header_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_header_TS42.csv
+2026-10-13 12:52:33.530 - CSV trx_header_TSxx (S2).0 - Finished processing (I=6042, O=0, R=0, W=6000, U=42, E=0)
+2026-10-13 12:52:33.535 - CSV trx_line_TSxx (S2).0 - Opening file: file:///G:/My%20Drive/File%20Kuliah/Semester%207/data-warehouse/assignment/tugas%20kelompok/Data-20261013T041524Z-1-001/Data/S2_POS_TOKO/trx_line_TS42.csv
+2026-10-13 12:52:33.556 - Agregasi pembayaran.0 - Finished processing (I=0, O=0, R=6693, W=5825, U=0, E=0)
+2026-10-13 12:52:33.564 - Konversi header.0 - Finished processing (I=0, O=0, R=6000, W=6000, U=0, E=0)
+2026-10-13 12:52:33.566 - Flag SPLIT.0 - Finished processing (I=0, O=0, R=5825, W=5825, U=0, E=0)
+2026-10-13 12:52:33.567 - CSV trx_line_TSxx (S2).0 - Finished processing (I=8670, O=0, R=0, W=8628, U=42, E=0)
+2026-10-13 12:52:33.579 - Status NORMAL?.0 - Finished processing (I=0, O=0, R=6000, W=6000, U=0, E=0)
+2026-10-13 12:52:33.581 - Konversi line.0 - Finished processing (I=0, O=0, R=8628, W=8628, U=0, E=0)
+2026-10-13 12:52:33.681 - rej_s2_void.0 - Finished processing (I=0, O=175, R=175, W=175, U=0, E=0)
+2026-10-13 12:52:35.086 - stg_s2_trx_header.0 - Finished processing (I=0, O=5825, R=5825, W=5825, U=0, E=0)
+2026-10-13 12:52:35.789 - stg_s2_trx_payment.0 - Finished processing (I=0, O=5825, R=5825, W=5825, U=0, E=0)
+2026-10-13 12:52:35.910 - stg_s2_trx_line.0 - Finished processing (I=0, O=8628, R=8628, W=8628, U=0, E=0)
+2026-10-13 12:52:35.915 - J_NRG_DW_Main - Starting entry [T05 Staging S3 Marketplace]
+2026-10-13 12:52:35.986 - T05 Staging S3 Marketplace - Using run configuration [Pentaho local]
+2026-10-13 12:52:35.988 - T05_stg_s3_marketplace - Dispatching started for transformation [T05_stg_s3_marketplace]
+2026-10-13 12:52:36.015 - stg_s3_inv_item.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:36.159 - Konversi tipe, UTC->WIB, mapping SKU.0 - Optimization level set to 9.
+2026-10-13 12:52:36.678 - JSON pages (invoice level).0 - Finished processing (I=1530, O=0, R=0, W=1530, U=0, E=0)
+2026-10-13 12:52:36.685 - JSON items[] (explode).0 - Finished processing (I=1831, O=0, R=1530, W=1831, U=0, E=0)
+2026-10-13 12:52:36.698 - Konversi tipe, UTC->WIB, mapping SKU.0 - Finished processing (I=0, O=0, R=1831, W=1831, U=0, E=0)
+2026-10-13 12:52:36.718 - Urut: invoice, sku, tarik terakhir dulu.0 - Finished processing (I=0, O=0, R=1831, W=1831, U=0, E=0)
+2026-10-13 12:52:36.731 - Dedup invoice+seller_sku (ambil terbaru).0 - Finished processing (I=0, O=0, R=1831, W=3594, U=0, E=0)
+2026-10-13 12:52:36.753 - Total gross per invoice.0 - Finished processing (I=0, O=0, R=1797, W=1500, U=0, E=0)
+2026-10-13 12:52:36.909 - Alokasi fee proporsional.0 - Optimization level set to 9.
+2026-10-13 12:52:36.931 - Ambil total invoice.0 - Finished processing (I=0, O=0, R=3297, W=1797, U=0, E=0)
+2026-10-13 12:52:36.934 - Kota pembeli final.0 - Optimization level set to 9.
+2026-10-13 12:52:36.977 - Alokasi fee proporsional.0 - Finished processing (I=0, O=0, R=1797, W=1797, U=0, E=0)
+2026-10-13 12:52:36.982 - Kota baku pembeli.0 - Finished processing (I=25, O=0, R=1797, W=1797, U=0, E=0)
+2026-10-13 12:52:36.986 - Kota pembeli final.0 - Finished processing (I=0, O=0, R=1797, W=1797, U=0, E=0)
+2026-10-13 12:52:37.981 - stg_s3_inv_item.0 - Finished processing (I=0, O=1797, R=1797, W=1797, U=0, E=0)
+2026-10-13 12:52:37.984 - J_NRG_DW_Main - Starting entry [T06 Staging S1 Ecom]
+2026-10-13 12:52:38.042 - T06 Staging S1 Ecom - Using run configuration [Pentaho local]
+2026-10-13 12:52:38.044 - T06_stg_s1_ecom - Dispatching started for transformation [T06_stg_s1_ecom]
+2026-10-13 12:52:38.052 - stg_s1_customer.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:38.053 - stg_s1_order_line.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:38.075 - Normalkan HP dan kota pelanggan.0 - Optimization level set to 9.
+2026-10-13 12:52:38.077 - PPN 11% -> ex-PPN dan mapping SKU.0 - Optimization level set to 9.
+2026-10-13 12:52:38.122 - Kota pelanggan final.0 - Optimization level set to 9.
+2026-10-13 12:52:38.195 - S1 customers + alamat terpilih.0 - Finished reading query, closing connection
+2026-10-13 12:52:38.198 - S1 customers + alamat terpilih.0 - Finished processing (I=600, O=0, R=0, W=600, U=0, E=0)
+2026-10-13 12:52:38.210 - Normalkan HP dan kota pelanggan.0 - Finished processing (I=0, O=0, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:38.216 - Kota baku pelanggan.0 - Finished processing (I=25, O=0, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:38.222 - Kota pelanggan final.0 - Finished processing (I=0, O=0, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:38.427 - S1 order_items + orders + voucher + retur.0 - Finished reading query, closing connection
+2026-10-13 12:52:38.430 - S1 order_items + orders + voucher + retur.0 - Finished processing (I=4540, O=0, R=0, W=4540, U=0, E=0)
+2026-10-13 12:52:38.482 - PPN 11% -> ex-PPN dan mapping SKU.0 - Finished processing (I=0, O=0, R=4540, W=4540, U=0, E=0)
+2026-10-13 12:52:38.514 - stg_s1_customer.0 - Finished processing (I=0, O=600, R=600, W=600, U=0, E=0)
+2026-10-13 12:52:40.725 - stg_s1_order_line.0 - Finished processing (I=0, O=4540, R=4540, W=4540, U=0, E=0)
+2026-10-13 12:52:40.729 - J_NRG_DW_Main - Starting entry [T07 Dimensi referensi]
+2026-10-13 12:52:40.777 - T07 Dimensi referensi - Using run configuration [Pentaho local]
+2026-10-13 12:52:40.779 - T07_dim_referensi - Dispatching started for transformation [T07_dim_referensi]
+2026-10-13 12:52:40.784 - map_produk.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:40.785 - dim_toko_kanal.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:40.785 - dim_tanggal.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:40.785 - dim_kampanye.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:40.786 - dim_metode_bayar.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:40.806 - Kampanye valid (S5).0 - Finished reading query, closing connection
+2026-10-13 12:52:40.813 - Toko dan kanal (S2 store_master + WEB + MPL).0 - Finished reading query, closing connection
+2026-10-13 12:52:40.815 - Bangun dim_tanggal (2022-2023).0 - Finished reading query, closing connection
+2026-10-13 12:52:40.815 - Kampanye valid (S5).0 - Finished processing (I=15, O=0, R=0, W=15, U=0, E=0)
+2026-10-13 12:52:40.816 - Toko dan kanal (S2 store_master + WEB + MPL).0 - Finished processing (I=45, O=0, R=0, W=45, U=0, E=0)
+2026-10-13 12:52:40.816 - Bangun dim_tanggal (2022-2023).0 - Finished processing (I=730, O=0, R=0, W=730, U=0, E=0)
+2026-10-13 12:52:40.822 - Metode bayar (S1 + S2 + SPLIT).0 - Finished reading query, closing connection
+2026-10-13 12:52:40.825 - Metode bayar (S1 + S2 + SPLIT).0 - Finished processing (I=10, O=0, R=0, W=10, U=0, E=0)
+2026-10-13 12:52:40.837 - dim_kampanye.0 - Finished processing (I=0, O=15, R=15, W=15, U=0, E=0)
+2026-10-13 12:52:40.837 - dim_metode_bayar.0 - Finished processing (I=0, O=10, R=10, W=10, U=0, E=0)
+2026-10-13 12:52:40.840 - dim_toko_kanal.0 - Finished processing (I=0, O=45, R=45, W=45, U=0, E=0)
+2026-10-13 12:52:40.845 - map_produk (S1,S2,S3 -> material_no).0 - Finished reading query, closing connection
+2026-10-13 12:52:40.846 - map_produk (S1,S2,S3 -> material_no).0 - Finished processing (I=181, O=0, R=0, W=181, U=0, E=0)
+2026-10-13 12:52:40.916 - map_produk.0 - Finished processing (I=0, O=181, R=181, W=181, U=0, E=0)
+2026-10-13 12:52:41.115 - dim_tanggal.0 - Finished processing (I=0, O=730, R=730, W=730, U=0, E=0)
+2026-10-13 12:52:41.118 - J_NRG_DW_Main - Starting entry [T08 dim_pemasok]
+2026-10-13 12:52:41.145 - T08 dim_pemasok - Using run configuration [Pentaho local]
+2026-10-13 12:52:41.147 - T08_dim_pemasok - Dispatching started for transformation [T08_dim_pemasok]
+2026-10-13 12:52:41.151 - dim_pemasok.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:41.160 - stg_erp_pemasok.0 - Finished reading query, closing connection
+2026-10-13 12:52:41.162 - stg_erp_pemasok.0 - Finished processing (I=10, O=0, R=0, W=10, U=0, E=0)
+2026-10-13 12:52:41.173 - dim_pemasok.0 - Finished processing (I=0, O=10, R=10, W=10, U=0, E=0)
+2026-10-13 12:52:41.176 - J_NRG_DW_Main - Starting entry [T09 dim_produk]
+2026-10-13 12:52:41.217 - T09 dim_produk - Using run configuration [Pentaho local]
+2026-10-13 12:52:41.218 - T09_dim_produk - Dispatching started for transformation [T09_dim_produk]
+2026-10-13 12:52:41.221 - dim_produk.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:41.256 - Versi produk ERP + produk late arriving.0 - Finished reading query, closing connection
+2026-10-13 12:52:41.258 - Versi produk ERP + produk late arriving.0 - Finished processing (I=80, O=0, R=0, W=80, U=0, E=0)
+2026-10-13 12:52:41.313 - dim_produk.0 - Finished processing (I=0, O=80, R=80, W=80, U=0, E=0)
+2026-10-13 12:52:41.316 - J_NRG_DW_Main - Starting entry [T10 dim_pelanggan]
+2026-10-13 12:52:41.351 - T10 dim_pelanggan - Using run configuration [Pentaho local]
+2026-10-13 12:52:41.353 - T10_dim_pelanggan - Dispatching started for transformation [T10_dim_pelanggan]
+2026-10-13 12:52:41.356 - dim_pelanggan.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:41.386 - Gabung web + member + marketplace.0 - Finished reading query, closing connection
+2026-10-13 12:52:41.389 - Gabung web + member + marketplace.0 - Finished processing (I=1556, O=0, R=0, W=1556, U=0, E=0)
+2026-10-13 12:52:42.185 - dim_pelanggan.0 - Finished processing (I=0, O=1556, R=1556, W=1556, U=0, E=0)
+2026-10-13 12:52:42.189 - J_NRG_DW_Main - Starting entry [T11 fact_penjualan]
+2026-10-13 12:52:42.228 - T11 fact_penjualan - Using run configuration [Pentaho local]
+2026-10-13 12:52:42.229 - T11_fact_penjualan - Dispatching started for transformation [T11_fact_penjualan]
+2026-10-13 12:52:42.232 - fact_penjualan.0 - Connected to database [NRG_DW] (commit=1000)
+2026-10-13 12:52:42.256 - Hitung bersih, HPP, margin kotor.0 - Optimization level set to 9.
+2026-10-13 12:52:48.014 - Ekstrak transaksi (S1, S2, S3).0 - Finished reading query, closing connection
+2026-10-13 12:52:48.016 - Ekstrak transaksi (S1, S2, S3).0 - Finished processing (I=14419, O=0, R=0, W=14419, U=0, E=0)
+2026-10-13 12:52:48.022 - Hitung bersih, HPP, margin kotor.0 - Finished processing (I=0, O=0, R=14419, W=14419, U=0, E=0)
+2026-10-13 12:52:51.604 - fact_penjualan.0 - Finished processing (I=0, O=14419, R=14419, W=14419, U=0, E=0)
+2026-10-13 12:52:51.607 - J_NRG_DW_Main - Finished job entry [T11 fact_penjualan] (result=[true])
+2026-10-13 12:52:51.607 - J_NRG_DW_Main - Finished job entry [T10 dim_pelanggan] (result=[true])
+2026-10-13 12:52:51.608 - J_NRG_DW_Main - Finished job entry [T09 dim_produk] (result=[true])
+2026-10-13 12:52:51.608 - J_NRG_DW_Main - Finished job entry [T08 dim_pemasok] (result=[true])
+2026-10-13 12:52:51.608 - J_NRG_DW_Main - Finished job entry [T07 Dimensi referensi] (result=[true])
+2026-10-13 12:52:51.610 - J_NRG_DW_Main - Finished job entry [T06 Staging S1 Ecom] (result=[true])
+2026-10-13 12:52:51.610 - J_NRG_DW_Main - Finished job entry [T05 Staging S3 Marketplace] (result=[true])
+2026-10-13 12:52:51.611 - J_NRG_DW_Main - Finished job entry [T04 Staging S2 Transaksi POS] (result=[true])
+2026-10-13 12:52:51.612 - J_NRG_DW_Main - Finished job entry [T03 Staging S2 Master (toko, member)] (result=[true])
+2026-10-13 12:52:51.612 - J_NRG_DW_Main - Finished job entry [T02 Staging S5 Kampanye] (result=[true])
+2026-10-13 12:52:51.613 - J_NRG_DW_Main - Finished job entry [T01 Staging S4 ERP + ref_kota] (result=[true])
+2026-10-13 12:52:51.613 - J_NRG_DW_Main - Finished job entry [Reset DW (hapus staging, dimensi, fakta)] (result=[true])
+2026-10-13 12:52:51.614 - J_NRG_DW_Main - Job execution finished
+2026-10-13 12:52:51.616 - Kitchen - Finished!
+2026-10-13 12:52:51.616 - Kitchen - Start=2026/10/13 12:52:27.453, Stop=2026/10/13 12:52:51.616
+2026-10-13 12:52:51.616 - Kitchen - Processing ended after 24 seconds.

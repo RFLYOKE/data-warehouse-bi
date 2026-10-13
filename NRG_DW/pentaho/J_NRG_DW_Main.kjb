@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job><name>J_NRG_DW_Main</name><description>Orkestrasi ETL NRG Data Warehouse (S1-S5 -> star schema)</description><extended_description/>
+<job_version/><job_status>0</job_status><directory>/</directory><created_user>kelompok4</created_user><created_date>2026/10/13 12:00:00.000</created_date>
+<modified_user>kelompok4</modified_user><modified_date>2026/10/13 12:00:00.000</modified_date>
+<parameters><parameter><name>DATA_DIR</name><default_value>G:/My Drive/File Kuliah/Semester 7/data-warehouse/assignment/tugas kelompok/Data-20261013T041524Z-1-001/Data</default_value><description>Folder paket data (berisi S1_ECOM_DB, S2_POS_TOKO, ...)</description></parameter><parameter><name>DB_HOST</name><default_value>localhost</default_value><description>Host MySQL</description></parameter><parameter><name>DB_PORT</name><default_value>3306</default_value><description>Port MySQL</description></parameter><parameter><name>DB_USER</name><default_value>root</default_value><description>User MySQL</description></parameter><parameter><name>DB_PASS</name><default_value></default_value><description>Password MySQL</description></parameter><parameter><name>DW_DB</name><default_value>nrg_dw</default_value><description>Nama database data warehouse</description></parameter><parameter><name>ECOM_DB</name><default_value>nrg_ecom</default_value><description>Nama database OLTP situs web (S1)</description></parameter></parameters>
+<connection><name>NRG_DW</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${DW_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<connection><name>NRG_ECOM</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${ECOM_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<slaveservers/>
+<job-log-table><connection/><schema/><table/><size_limit_lines/><interval/><timeout_days/></job-log-table>
+<jobentry-log-table><connection/><schema/><table/><timeout_days/></jobentry-log-table>
+<channel-log-table><connection/><schema/><table/><timeout_days/></channel-log-table>
+<checkpoint-log-table><connection/><schema/><table/><timeout_days/></checkpoint-log-table>
+<entries><entry><name>START</name><description/><type>SPECIAL</type><start>Y</start><dummy>N</dummy><repeat>N</repeat>
+<schedulerType>0</schedulerType><intervalSeconds>0</intervalSeconds><intervalMinutes>60</intervalMinutes><hour>12</hour>
+<minutes>0</minutes><weekDay>1</weekDay><DayOfMonth>1</DayOfMonth><parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>40</xloc><yloc>60</yloc></entry><entry><name>Reset DW (hapus staging, dimensi, fakta)</name><description/><type>SQL</type><sql/>
+<useVariableSubstitution>F</useVariableSubstitution><sqlfromfile>T</sqlfromfile>
+<sqlfilename>${Internal.Entry.Current.Directory}/../sql/02_reset_dw.sql</sqlfilename><sendOneStatement>F</sendOneStatement>
+<connection>NRG_DW</connection><parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>200</xloc><yloc>60</yloc></entry><entry><name>T01 Staging S4 ERP + ref_kota</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T01_stg_s4_erp_ref_kota.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>380</xloc><yloc>60</yloc></entry><entry><name>T02 Staging S5 Kampanye</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T02_stg_s5_kampanye.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>550</xloc><yloc>130</yloc></entry><entry><name>T03 Staging S2 Master (toko, member)</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T03_stg_s2_master.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>720</xloc><yloc>60</yloc></entry><entry><name>T04 Staging S2 Transaksi POS</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T04_stg_s2_pos_trx.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>890</xloc><yloc>130</yloc></entry><entry><name>T05 Staging S3 Marketplace</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T05_stg_s3_marketplace.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>1060</xloc><yloc>60</yloc></entry><entry><name>T06 Staging S1 Ecom</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T06_stg_s1_ecom.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>1230</xloc><yloc>130</yloc></entry><entry><name>T07 Dimensi referensi</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T07_dim_referensi.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>1400</xloc><yloc>60</yloc></entry><entry><name>T08 dim_pemasok</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T08_dim_pemasok.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>1570</xloc><yloc>130</yloc></entry><entry><name>T09 dim_produk</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T09_dim_produk.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>1740</xloc><yloc>60</yloc></entry><entry><name>T10 dim_pelanggan</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T10_dim_pelanggan.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>1910</xloc><yloc>130</yloc></entry><entry><name>T11 fact_penjualan</name><description/><type>TRANS</type><specification_method>filename</specification_method>
+<filename>${Internal.Entry.Current.Directory}/T11_fact_penjualan.ktr</filename><transname/><arg_from_previous>N</arg_from_previous>
+<params_from_previous>N</params_from_previous><exec_per_row>N</exec_per_row><clear_rows>N</clear_rows><clear_files>N</clear_files>
+<set_logfile>N</set_logfile><logfile/><logext/><add_date>N</add_date><add_time>N</add_time><loglevel>Basic</loglevel>
+<cluster>N</cluster><slave_server_name/><set_append_logfile>N</set_append_logfile><wait_until_finished>Y</wait_until_finished>
+<follow_abort_remote>N</follow_abort_remote><create_parent_folder>N</create_parent_folder><logging_remote_work>N</logging_remote_work>
+<run_configuration>Pentaho local</run_configuration><parameters><pass_all_parameters>Y</pass_all_parameters></parameters>
+<parallel>N</parallel><draw>Y</draw><nr>0</nr><xloc>2080</xloc><yloc>60</yloc></entry></entries>
+<hops><hop><from>START</from><to>Reset DW (hapus staging, dimensi, fakta)</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>Y</unconditional></hop><hop><from>Reset DW (hapus staging, dimensi, fakta)</from><to>T01 Staging S4 ERP + ref_kota</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T01 Staging S4 ERP + ref_kota</from><to>T02 Staging S5 Kampanye</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T02 Staging S5 Kampanye</from><to>T03 Staging S2 Master (toko, member)</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T03 Staging S2 Master (toko, member)</from><to>T04 Staging S2 Transaksi POS</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T04 Staging S2 Transaksi POS</from><to>T05 Staging S3 Marketplace</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T05 Staging S3 Marketplace</from><to>T06 Staging S1 Ecom</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T06 Staging S1 Ecom</from><to>T07 Dimensi referensi</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T07 Dimensi referensi</from><to>T08 dim_pemasok</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T08 dim_pemasok</from><to>T09 dim_produk</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T09 dim_produk</from><to>T10 dim_pelanggan</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop><hop><from>T10 dim_pelanggan</from><to>T11 fact_penjualan</to><from_nr>0</from_nr><to_nr>0</to_nr><enabled>Y</enabled><evaluation>Y</evaluation><unconditional>N</unconditional></hop></hops>
+<notepads/>
+</job>

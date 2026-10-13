@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+<info><name>T05_stg_s3_marketplace</name><description>Ekstrak JSON berpaginasi (invoice->items[]->fees), dedup, UTC->WIB, alokasi fee per item</description><extended_description/><trans_version/>
+<trans_type>Normal</trans_type><trans_status>0</trans_status><directory>/</directory>
+<parameters><parameter><name>DATA_DIR</name><default_value>G:/My Drive/File Kuliah/Semester 7/data-warehouse/assignment/tugas kelompok/Data-20261013T041524Z-1-001/Data</default_value><description>Folder paket data (berisi S1_ECOM_DB, S2_POS_TOKO, ...)</description></parameter><parameter><name>DB_HOST</name><default_value>localhost</default_value><description>Host MySQL</description></parameter><parameter><name>DB_PORT</name><default_value>3306</default_value><description>Port MySQL</description></parameter><parameter><name>DB_USER</name><default_value>root</default_value><description>User MySQL</description></parameter><parameter><name>DB_PASS</name><default_value></default_value><description>Password MySQL</description></parameter><parameter><name>DW_DB</name><default_value>nrg_dw</default_value><description>Nama database data warehouse</description></parameter><parameter><name>ECOM_DB</name><default_value>nrg_ecom</default_value><description>Nama database OLTP situs web (S1)</description></parameter></parameters>
+<log><trans-log-table><connection/><schema/><table/><size_limit_lines/><interval/><timeout_days/></trans-log-table></log>
+<maxdate><connection/><table/><field/><offset>0.0</offset><maxdiff>0.0</maxdiff></maxdate>
+<size_rowset>10000</size_rowset><sleep_time_empty>50</sleep_time_empty><sleep_time_full>50</sleep_time_full>
+<unique_connections>N</unique_connections><feedback_shown>Y</feedback_shown><feedback_size>50000</feedback_size>
+<using_thread_priorities>Y</using_thread_priorities><shared_objects_file/><capture_step_performance>N</capture_step_performance>
+<step_performance_capturing_delay>1000</step_performance_capturing_delay><step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+<dependencies/><partitionschemas/><slaveservers/><clusterschemas/><created_user>kelompok4</created_user><created_date>2026/10/13 12:00:00.000</created_date>
+<modified_user>kelompok4</modified_user><modified_date>2026/10/13 12:00:00.000</modified_date></info>
+<notepads/>
+<connection><name>NRG_DW</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${DW_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<connection><name>NRG_ECOM</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${ECOM_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<order><hop><from>JSON pages (invoice level)</from><to>JSON items[] (explode)</to><enabled>Y</enabled></hop><hop><from>JSON items[] (explode)</from><to>Konversi tipe, UTC->WIB, mapping SKU</to><enabled>Y</enabled></hop><hop><from>Konversi tipe, UTC->WIB, mapping SKU</from><to>Urut: invoice, sku, tarik terakhir dulu</to><enabled>Y</enabled></hop><hop><from>Urut: invoice, sku, tarik terakhir dulu</from><to>Dedup invoice+seller_sku (ambil terbaru)</to><enabled>Y</enabled></hop><hop><from>Dedup invoice+seller_sku (ambil terbaru)</from><to>Total gross per invoice</to><enabled>Y</enabled></hop><hop><from>Dedup invoice+seller_sku (ambil terbaru)</from><to>Ambil total invoice</to><enabled>Y</enabled></hop><hop><from>Total gross per invoice</from><to>Ambil total invoice</to><enabled>Y</enabled></hop><hop><from>Ambil total invoice</from><to>Alokasi fee proporsional</to><enabled>Y</enabled></hop><hop><from>Alokasi fee proporsional</from><to>Kota baku pembeli</to><enabled>Y</enabled></hop><hop><from>Kota baku pembeli</from><to>Kota pembeli final</to><enabled>Y</enabled></hop><hop><from>Kota pembeli final</from><to>stg_s3_inv_item</to><enabled>Y</enabled></hop></order>
+<step><name>JSON pages (invoice level)</name><type>JsonInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<include>N</include><include_field/><rownum>N</rownum><addresultfile>N</addresultfile><readurl>N</readurl>
+<removeSourceField>N</removeSourceField><IsIgnoreEmptyFile>N</IsIgnoreEmptyFile><doNotFailIfNoFile>N</doNotFailIfNoFile>
+<ignoreMissingPath>Y</ignoreMissingPath><defaultPathLeafToNull>Y</defaultPathLeafToNull><rownum_field/>
+<file><name>${DATA_DIR}/S3_MPL_API</name><filemask>mpl_pull_page_[0-9]+\.json</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders></file><fields><field><name>invoice</name><path>$.records[*].invoice</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>paid_at</name><path>$.records[*].paid_at</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>channel</name><path>$.records[*].channel</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>buyer_hash</name><path>$.records[*].buyer.hash</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>buyer_city</name><path>$.records[*].buyer.city</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>commission</name><path>$.records[*].fees.commission</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>service</name><path>$.records[*].fees.service</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>diambil_pada</name><path>$.records[*].diambil_pada</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>items_json</name><path>$.records[*].items</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field></fields><limit>0</limit><IsInFields>N</IsInFields><IsAFile>N</IsAFile>
+<valueField></valueField><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
+<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>70</xloc><yloc>120</yloc><draw>Y</draw></GUI></step><step><name>JSON items[] (explode)</name><type>JsonInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<include>N</include><include_field/><rownum>N</rownum><addresultfile>N</addresultfile><readurl>N</readurl>
+<removeSourceField>N</removeSourceField><IsIgnoreEmptyFile>N</IsIgnoreEmptyFile><doNotFailIfNoFile>N</doNotFailIfNoFile>
+<ignoreMissingPath>Y</ignoreMissingPath><defaultPathLeafToNull>Y</defaultPathLeafToNull><rownum_field/>
+<fields><field><name>seller_sku</name><path>$[*].seller_sku</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>qty</name><path>$[*].qty</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>price</name><path>$[*].price</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field><field><name>voucher</name><path>$[*].voucher</path><type>String</type><format/><currency/><decimal/><group/><length>-1</length><precision>-1</precision><trim_type>none</trim_type><repeat>N</repeat></field></fields><limit>0</limit><IsInFields>Y</IsInFields><IsAFile>N</IsAFile>
+<valueField>items_json</valueField><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
+<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>270</xloc><yloc>120</yloc><draw>Y</draw></GUI></step><step><name>Konversi tipe, UTC->WIB, mapping SKU</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+
+var paid_utc = str2date(T(paid_at), "yyyy-MM-dd'T'HH:mm:ss'Z'");
+var paid_wib = new Date(paid_utc.getTime() + 7 * 3600 * 1000);
+var diambil_d = str2date(T(diambil_pada), "yyyy-MM-dd'T'HH:mm:ss");
+var qty_i = INT(qty); var price_n = NUM(price); var voucher_n = NUM(voucher); if (voucher_n == null) voucher_n = 0;
+var commission_n = NUM(commission); if (commission_n == null) commission_n = 0;
+var service_n = NUM(service); if (service_n == null) service_n = 0;
+var price_excl = R2(price_n / 1.11); var voucher_excl = R2(voucher_n / 1.11);
+var gross_line_incl = qty_i * price_n;
+var sku_c = T(seller_sku); var invoice_c = T(invoice);
+var material_no = "P-" + sku_c.substring(sku_c.length - 4);
+var kota_upper = T(buyer_city) == null ? null : T(buyer_city).toUpperCase().replace(/\s+/g, " ");
+]]></jsScript_script></jsScript></jsScripts><fields><field><name>paid_utc</name><rename>paid_utc</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>paid_wib</name><rename>paid_wib</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>diambil_d</name><rename>diambil_d</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>qty_i</name><rename>qty_i</rename><type>Integer</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>price_n</name><rename>price_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>voucher_n</name><rename>voucher_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>commission_n</name><rename>commission_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>service_n</name><rename>service_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>price_excl</name><rename>price_excl</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>voucher_excl</name><rename>voucher_excl</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>gross_line_incl</name><rename>gross_line_incl</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>sku_c</name><rename>sku_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>invoice_c</name><rename>invoice_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>material_no</name><rename>material_no</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>kota_upper</name><rename>kota_upper</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>480</xloc><yloc>120</yloc><draw>Y</draw></GUI></step><step><name>Urut: invoice, sku, tarik terakhir dulu</name><type>SortRows</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<directory>%%java.io.tmpdir%%</directory><prefix>out</prefix><sort_size>1000000</sort_size><free_memory/><compress>N</compress><compress_variable/><unique_rows>N</unique_rows><fields><field><name>invoice_c</name><ascending>Y</ascending><case_sensitive>N</case_sensitive><collator_enabled>N</collator_enabled><collator_strength>0</collator_strength><presorted>N</presorted></field><field><name>sku_c</name><ascending>Y</ascending><case_sensitive>N</case_sensitive><collator_enabled>N</collator_enabled><collator_strength>0</collator_strength><presorted>N</presorted></field><field><name>diambil_d</name><ascending>N</ascending><case_sensitive>N</case_sensitive><collator_enabled>N</collator_enabled><collator_strength>0</collator_strength><presorted>N</presorted></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>700</xloc><yloc>120</yloc><draw>Y</draw></GUI></step><step><name>Dedup invoice+seller_sku (ambil terbaru)</name><type>Unique</type><description/><distribute>N</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<count_rows>N</count_rows><count_field/><reject_duplicate_row>N</reject_duplicate_row><error_description/><fields><field><name>invoice_c</name><case_insensitive>N</case_insensitive></field><field><name>sku_c</name><case_insensitive>N</case_insensitive></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>920</xloc><yloc>120</yloc><draw>Y</draw></GUI></step><step><name>Total gross per invoice</name><type>GroupBy</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<all_rows>N</all_rows><ignore_aggregate>N</ignore_aggregate><field_ignore/><directory>%%java.io.tmpdir%%</directory><prefix>grp</prefix><add_linenr>N</add_linenr><linenr_fieldname/><give_back_row>N</give_back_row><group><field><name>invoice_c</name></field></group><fields><field><aggregate>gross_sum</aggregate><subject>gross_line_incl</subject><type>SUM</type><valuefield/></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>1140</xloc><yloc>40</yloc><draw>Y</draw></GUI></step><step><name>Ambil total invoice</name><type>StreamLookup</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<from>Total gross per invoice</from><input_sorted>N</input_sorted><preserve_memory>Y</preserve_memory><sorted_list>N</sorted_list><integer_pair>N</integer_pair><lookup><key><name>invoice_c</name><field>invoice_c</field></key><value><name>gross_sum</name><rename>gross_sum</rename><default/><type>Number</type></value></lookup><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>1140</xloc><yloc>200</yloc><draw>Y</draw></GUI></step><step><name>Alokasi fee proporsional</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+
+var share = gross_sum > 0 ? gross_line_incl / gross_sum : 0;
+var fee_komisi_alok = R2(commission_n * share);
+var fee_layanan_alok = R2(service_n * share);
+]]></jsScript_script></jsScript></jsScripts><fields><field><name>fee_komisi_alok</name><rename>fee_komisi_alok</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>fee_layanan_alok</name><rename>fee_layanan_alok</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>1340</xloc><yloc>200</yloc><draw>Y</draw></GUI></step><step><name>Kota baku pembeli</name><type>DBLookup</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><cache>Y</cache><cache_size>0</cache_size><cache_load_all>Y</cache_load_all><lookup><schema/><table>stg_ref_kota</table><orderby/><fail_on_multiple>N</fail_on_multiple><eat_row_on_failure>N</eat_row_on_failure><key><name>kota_upper</name><field>alias_upper</field><condition>=</condition><name2/></key><value><name>kota_baku</name><rename>kota_lookup</rename><default/><type>String</type></value></lookup><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>1540</xloc><yloc>200</yloc><draw>Y</draw></GUI></step><step><name>Kota pembeli final</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(buyer_city);]]></jsScript_script></jsScript></jsScripts><fields><field><name>kota_final</name><rename>kota_final</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>1740</xloc><yloc>200</yloc><draw>Y</draw></GUI></step><step><name>stg_s3_inv_item</name><type>TableOutput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><schema/><table>stg_s3_inv_item</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>invoice</column_name><stream_name>invoice_c</stream_name></field><field><column_name>seller_sku</column_name><stream_name>sku_c</stream_name></field><field><column_name>channel</column_name><stream_name>channel</stream_name></field><field><column_name>paid_at_utc</column_name><stream_name>paid_utc</stream_name></field><field><column_name>paid_at_wib</column_name><stream_name>paid_wib</stream_name></field><field><column_name>buyer_hash</column_name><stream_name>buyer_hash</stream_name></field><field><column_name>buyer_city</column_name><stream_name>buyer_city</stream_name></field><field><column_name>kota_baku</column_name><stream_name>kota_final</stream_name></field><field><column_name>qty</column_name><stream_name>qty_i</stream_name></field><field><column_name>price_incl</column_name><stream_name>price_n</stream_name></field><field><column_name>voucher_incl</column_name><stream_name>voucher_n</stream_name></field><field><column_name>unit_price_excl</column_name><stream_name>price_excl</stream_name></field><field><column_name>voucher_excl</column_name><stream_name>voucher_excl</stream_name></field><field><column_name>gross_line_incl</column_name><stream_name>gross_line_incl</stream_name></field><field><column_name>commission_invoice</column_name><stream_name>commission_n</stream_name></field><field><column_name>service_invoice</column_name><stream_name>service_n</stream_name></field><field><column_name>fee_komisi_alokasi</column_name><stream_name>fee_komisi_alok</stream_name></field><field><column_name>fee_layanan_alokasi</column_name><stream_name>fee_layanan_alok</stream_name></field><field><column_name>material_no</column_name><stream_name>material_no</stream_name></field><field><column_name>diambil_pada</column_name><stream_name>diambil_d</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>1940</xloc><yloc>200</yloc><draw>Y</draw></GUI></step>
+<step_error_handling/>
+<slave-step-copy-partition-distribution/><slave_transformation>N</slave_transformation>
+</transformation>

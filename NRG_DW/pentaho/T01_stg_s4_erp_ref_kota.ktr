@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+<info><name>T01_stg_s4_erp_ref_kota</name><description>Ekstrak S4 (produk_master, supplier_master) dan ref_kota.csv ke staging</description><extended_description/><trans_version/>
+<trans_type>Normal</trans_type><trans_status>0</trans_status><directory>/</directory>
+<parameters><parameter><name>DATA_DIR</name><default_value>G:/My Drive/File Kuliah/Semester 7/data-warehouse/assignment/tugas kelompok/Data-20261013T041524Z-1-001/Data</default_value><description>Folder paket data (berisi S1_ECOM_DB, S2_POS_TOKO, ...)</description></parameter><parameter><name>DB_HOST</name><default_value>localhost</default_value><description>Host MySQL</description></parameter><parameter><name>DB_PORT</name><default_value>3306</default_value><description>Port MySQL</description></parameter><parameter><name>DB_USER</name><default_value>root</default_value><description>User MySQL</description></parameter><parameter><name>DB_PASS</name><default_value></default_value><description>Password MySQL</description></parameter><parameter><name>DW_DB</name><default_value>nrg_dw</default_value><description>Nama database data warehouse</description></parameter><parameter><name>ECOM_DB</name><default_value>nrg_ecom</default_value><description>Nama database OLTP situs web (S1)</description></parameter></parameters>
+<log><trans-log-table><connection/><schema/><table/><size_limit_lines/><interval/><timeout_days/></trans-log-table></log>
+<maxdate><connection/><table/><field/><offset>0.0</offset><maxdiff>0.0</maxdiff></maxdate>
+<size_rowset>10000</size_rowset><sleep_time_empty>50</sleep_time_empty><sleep_time_full>50</sleep_time_full>
+<unique_connections>N</unique_connections><feedback_shown>Y</feedback_shown><feedback_size>50000</feedback_size>
+<using_thread_priorities>Y</using_thread_priorities><shared_objects_file/><capture_step_performance>N</capture_step_performance>
+<step_performance_capturing_delay>1000</step_performance_capturing_delay><step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+<dependencies/><partitionschemas/><slaveservers/><clusterschemas/><created_user>kelompok4</created_user><created_date>2026/10/13 12:00:00.000</created_date>
+<modified_user>kelompok4</modified_user><modified_date>2026/10/13 12:00:00.000</modified_date></info>
+<notepads/>
+<connection><name>NRG_DW</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${DW_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<connection><name>NRG_ECOM</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${ECOM_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<order><hop><from>CSV produk_master (S4)</from><to>Bersihkan produk ERP</to><enabled>Y</enabled></hop><hop><from>Bersihkan produk ERP</from><to>stg_erp_produk</to><enabled>Y</enabled></hop><hop><from>CSV supplier_master (S4)</from><to>stg_erp_pemasok</to><enabled>Y</enabled></hop><hop><from>CSV ref_kota</from><to>Normalkan alias kota</to><enabled>Y</enabled></hop><hop><from>Normalkan alias kota</from><to>Urutkan alias</to><enabled>Y</enabled></hop><hop><from>Urutkan alias</from><to>Hapus alias ganda</to><enabled>Y</enabled></hop><hop><from>Hapus alias ganda</from><to>stg_ref_kota</to><enabled>Y</enabled></hop></order>
+<step><name>CSV produk_master (S4)</name><type>TextFileInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
+<separator>,</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
+<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
+<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
+<noempty>Y</noempty><include>N</include><include_field></include_field>
+<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
+<add_to_result_filenames>N</add_to_result_filenames>
+<file><name>${DATA_DIR}/S4_ERP_MASTER</name><filemask>produk_master\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
+<filters/><fields><field><name>material_no</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>nama_produk</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>brand</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>kategori</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>sub_kategori</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>harga_pokok</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>supplier</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>status</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>berlaku_sejak</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
+<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
+<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
+<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
+<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
+<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>100</xloc><yloc>80</yloc><draw>Y</draw></GUI></step><step><name>Bersihkan produk ERP</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+
+var material_no_c = T(material_no); var nama_c = T(nama_produk); var brand_c = T(brand);
+var kategori_c = T(kategori); var sub_c = T(sub_kategori); var supplier_c = T(supplier);
+var status_c = T(status) == null ? null : T(status).toUpperCase();
+var harga_n = NUM(harga_pokok);
+var berlaku_d = str2date(T(berlaku_sejak), "yyyy-MM-dd");
+]]></jsScript_script></jsScript></jsScripts><fields><field><name>material_no_c</name><rename>material_no_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>nama_c</name><rename>nama_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>brand_c</name><rename>brand_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>kategori_c</name><rename>kategori_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>sub_c</name><rename>sub_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>supplier_c</name><rename>supplier_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>status_c</name><rename>status_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>harga_n</name><rename>harga_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>berlaku_d</name><rename>berlaku_d</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>340</xloc><yloc>80</yloc><draw>Y</draw></GUI></step><step><name>stg_erp_produk</name><type>TableOutput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><schema/><table>stg_erp_produk</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>material_no</column_name><stream_name>material_no_c</stream_name></field><field><column_name>nama_produk</column_name><stream_name>nama_c</stream_name></field><field><column_name>brand</column_name><stream_name>brand_c</stream_name></field><field><column_name>kategori</column_name><stream_name>kategori_c</stream_name></field><field><column_name>sub_kategori</column_name><stream_name>sub_c</stream_name></field><field><column_name>harga_pokok</column_name><stream_name>harga_n</stream_name></field><field><column_name>supplier</column_name><stream_name>supplier_c</stream_name></field><field><column_name>status</column_name><stream_name>status_c</stream_name></field><field><column_name>berlaku_sejak</column_name><stream_name>berlaku_d</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>580</xloc><yloc>80</yloc><draw>Y</draw></GUI></step><step><name>CSV supplier_master (S4)</name><type>TextFileInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
+<separator>,</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
+<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
+<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
+<noempty>Y</noempty><include>N</include><include_field></include_field>
+<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
+<add_to_result_filenames>N</add_to_result_filenames>
+<file><name>${DATA_DIR}/S4_ERP_MASTER</name><filemask>supplier_master\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
+<filters/><fields><field><name>supplier_id</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>nama_supplier</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>kota</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>kontak</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
+<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
+<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
+<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
+<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
+<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>100</xloc><yloc>200</yloc><draw>Y</draw></GUI></step><step><name>stg_erp_pemasok</name><type>TableOutput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><schema/><table>stg_erp_pemasok</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>supplier_id</column_name><stream_name>supplier_id</stream_name></field><field><column_name>nama_supplier</column_name><stream_name>nama_supplier</stream_name></field><field><column_name>kota</column_name><stream_name>kota</stream_name></field><field><column_name>kontak</column_name><stream_name>kontak</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>340</xloc><yloc>200</yloc><draw>Y</draw></GUI></step><step><name>CSV ref_kota</name><type>TextFileInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
+<separator>,</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
+<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
+<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
+<noempty>Y</noempty><include>N</include><include_field></include_field>
+<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
+<add_to_result_filenames>N</add_to_result_filenames>
+<file><name>${DATA_DIR}</name><filemask>ref_kota\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
+<filters/><fields><field><name>alias</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>kota_baku</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
+<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
+<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
+<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
+<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
+<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>100</xloc><yloc>320</yloc><draw>Y</draw></GUI></step><step><name>Normalkan alias kota</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+
+var alias_upper = T(alias) == null ? null : T(alias).toUpperCase().replace(/\s+/g, " ");
+var kota_baku_c = T(kota_baku);
+]]></jsScript_script></jsScript></jsScripts><fields><field><name>alias_upper</name><rename>alias_upper</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>kota_baku_c</name><rename>kota_baku_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>340</xloc><yloc>320</yloc><draw>Y</draw></GUI></step><step><name>Urutkan alias</name><type>SortRows</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<directory>%%java.io.tmpdir%%</directory><prefix>out</prefix><sort_size>1000000</sort_size><free_memory/><compress>N</compress><compress_variable/><unique_rows>N</unique_rows><fields><field><name>alias_upper</name><ascending>Y</ascending><case_sensitive>N</case_sensitive><collator_enabled>N</collator_enabled><collator_strength>0</collator_strength><presorted>N</presorted></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>560</xloc><yloc>320</yloc><draw>Y</draw></GUI></step><step><name>Hapus alias ganda</name><type>Unique</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<count_rows>N</count_rows><count_field/><reject_duplicate_row>N</reject_duplicate_row><error_description/><fields><field><name>alias_upper</name><case_insensitive>N</case_insensitive></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>740</xloc><yloc>320</yloc><draw>Y</draw></GUI></step><step><name>stg_ref_kota</name><type>TableOutput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><schema/><table>stg_ref_kota</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>alias_upper</column_name><stream_name>alias_upper</stream_name></field><field><column_name>kota_baku</column_name><stream_name>kota_baku_c</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>920</xloc><yloc>320</yloc><draw>Y</draw></GUI></step>
+<step_error_handling/>
+<slave-step-copy-partition-distribution/><slave_transformation>N</slave_transformation>
+</transformation>

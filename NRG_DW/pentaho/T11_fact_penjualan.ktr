@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+<info><name>T11_fact_penjualan</name><description>Muat fact_penjualan dari tiga kanal (S1, S2, S3): lookup surrogate key, hitung penjualan bersih, HPP (SCD2 per tanggal transaksi) dan margin kotor</description><extended_description/><trans_version/>
+<trans_type>Normal</trans_type><trans_status>0</trans_status><directory>/</directory>
+<parameters><parameter><name>DATA_DIR</name><default_value>G:/My Drive/File Kuliah/Semester 7/data-warehouse/assignment/tugas kelompok/Data-20261013T041524Z-1-001/Data</default_value><description>Folder paket data (berisi S1_ECOM_DB, S2_POS_TOKO, ...)</description></parameter><parameter><name>DB_HOST</name><default_value>localhost</default_value><description>Host MySQL</description></parameter><parameter><name>DB_PORT</name><default_value>3306</default_value><description>Port MySQL</description></parameter><parameter><name>DB_USER</name><default_value>root</default_value><description>User MySQL</description></parameter><parameter><name>DB_PASS</name><default_value></default_value><description>Password MySQL</description></parameter><parameter><name>DW_DB</name><default_value>nrg_dw</default_value><description>Nama database data warehouse</description></parameter><parameter><name>ECOM_DB</name><default_value>nrg_ecom</default_value><description>Nama database OLTP situs web (S1)</description></parameter></parameters>
+<log><trans-log-table><connection/><schema/><table/><size_limit_lines/><interval/><timeout_days/></trans-log-table></log>
+<maxdate><connection/><table/><field/><offset>0.0</offset><maxdiff>0.0</maxdiff></maxdate>
+<size_rowset>10000</size_rowset><sleep_time_empty>50</sleep_time_empty><sleep_time_full>50</sleep_time_full>
+<unique_connections>N</unique_connections><feedback_shown>Y</feedback_shown><feedback_size>50000</feedback_size>
+<using_thread_priorities>Y</using_thread_priorities><shared_objects_file/><capture_step_performance>N</capture_step_performance>
+<step_performance_capturing_delay>1000</step_performance_capturing_delay><step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+<dependencies/><partitionschemas/><slaveservers/><clusterschemas/><created_user>kelompok4</created_user><created_date>2026/10/13 12:00:00.000</created_date>
+<modified_user>kelompok4</modified_user><modified_date>2026/10/13 12:00:00.000</modified_date></info>
+<notepads/>
+<connection><name>NRG_DW</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${DW_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<connection><name>NRG_ECOM</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${ECOM_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<order><hop><from>Ekstrak transaksi (S1, S2, S3)</from><to>Hitung bersih, HPP, margin kotor</to><enabled>Y</enabled></hop><hop><from>Hitung bersih, HPP, margin kotor</from><to>fact_penjualan</to><enabled>Y</enabled></hop></order>
+<step><name>Ekstrak transaksi (S1, S2, S3)</name><type>TableInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><sql><![CDATA[SELECT 'S1_WEB' AS sumber_sistem, l.order_id AS no_transaksi, CAST(l.line_no AS SIGNED) AS no_baris,
+       CAST(DATE_FORMAT(l.order_ts, '%Y%m%d') AS UNSIGNED) AS tanggal_key, l.order_ts AS waktu_wib,
+       p.produk_key, COALESCE(pl.pelanggan_key, -1) AS pelanggan_key, tk.toko_kanal_key,
+       CAST(CASE WHEN l.voucher_id IS NOT NULL AND l.disc_amount_incl > 0 THEN COALESCE(k.kampanye_key, -2) ELSE -1 END AS SIGNED) AS kampanye_key,
+       CAST(COALESCE(mb.metode_bayar_key, -1) AS SIGNED) AS metode_bayar_key,
+       CAST(l.qty AS SIGNED) AS qty, l.unit_price_excl AS harga_satuan, l.disc_excl AS diskon_excl, p.harga_pokok AS hpp_satuan,
+       CAST(0 AS DECIMAL(18,2)) AS fee_komisi, CAST(0 AS DECIMAL(18,2)) AS fee_layanan, CAST(l.qty_retur AS SIGNED) AS qty_retur, CAST(l.refund_excl AS DECIMAL(18,2)) AS nilai_retur
+FROM stg_s1_order_line l
+JOIN map_produk mp ON mp.sumber = 'S1' AND mp.kode_sumber = l.sku
+JOIN dim_produk p  ON p.material_no = mp.material_no AND DATE(l.order_ts) BETWEEN p.tgl_efektif_awal AND p.tgl_efektif_akhir
+JOIN dim_toko_kanal tk ON tk.kode_toko_kanal = 'WEB'
+LEFT JOIN dim_pelanggan pl ON pl.customer_id_web = l.customer_id
+LEFT JOIN dim_kampanye k ON k.kode_promo = l.promo_code AND k.tgl_mulai = l.voucher_valid_from
+LEFT JOIN dim_metode_bayar mb ON mb.metode_bayar = l.payment_method
+WHERE l.status <> 'DIBATALKAN'
+UNION ALL
+SELECT 'S2_POS' AS sumber_sistem, l.trx_no AS no_transaksi, CAST(l.line_seq AS SIGNED) AS no_baris,
+       CAST(DATE_FORMAT(h.trx_date, '%Y%m%d') AS UNSIGNED) AS tanggal_key, CAST(h.trx_date AS DATETIME) AS waktu_wib,
+       p.produk_key, COALESCE(pl.pelanggan_key, -1) AS pelanggan_key, tk.toko_kanal_key,
+       CAST(CASE WHEN l.disc_pct > 0 THEN 
+COALESCE((SELECT k.kampanye_key FROM dim_kampanye k
+           WHERE k.kampanye_key > 0 AND h.trx_date BETWEEN k.tgl_mulai AND k.tgl_selesai
+             AND k.kanal_target IN ('Semua Kanal', 'Toko Fisik')
+           ORDER BY (k.kanal_target = 'Semua Kanal'), k.tgl_mulai DESC LIMIT 1), -1) ELSE -1 END AS SIGNED) AS kampanye_key,
+       CAST(COALESCE(mb.metode_bayar_key, -1) AS SIGNED) AS metode_bayar_key,
+       CAST(l.qty AS SIGNED) AS qty, l.unit_price_excl AS harga_satuan, ROUND(l.qty * l.unit_price_excl * l.disc_pct / 100, 2) AS diskon_excl,
+       p.harga_pokok AS hpp_satuan, CAST(0 AS DECIMAL(18,2)) AS fee_komisi, CAST(0 AS DECIMAL(18,2)) AS fee_layanan, CAST(0 AS SIGNED) AS qty_retur, CAST(0 AS DECIMAL(18,2)) AS nilai_retur
+FROM stg_s2_trx_line l
+JOIN stg_s2_trx_header h ON h.trx_no = l.trx_no
+LEFT JOIN stg_s2_trx_payment pay ON pay.trx_no = l.trx_no
+JOIN map_produk mp ON mp.sumber = 'S2' AND mp.kode_sumber = l.item_code
+JOIN dim_produk p  ON p.material_no = mp.material_no AND h.trx_date BETWEEN p.tgl_efektif_awal AND p.tgl_efektif_akhir
+JOIN dim_toko_kanal tk ON tk.kode_toko_kanal = h.store_code
+LEFT JOIN dim_pelanggan pl ON pl.member_no = h.member_no
+LEFT JOIN dim_metode_bayar mb ON mb.metode_bayar = CASE WHEN h.payment_type = 'SPLIT' OR COALESCE(pay.jml_baris_bayar, 1) > 1 THEN 'SPLIT' ELSE h.payment_type END
+UNION ALL
+SELECT 'S3_MPL' AS sumber_sistem, s.invoice AS no_transaksi,
+       CAST(ROW_NUMBER() OVER (PARTITION BY s.invoice ORDER BY s.seller_sku) AS SIGNED) AS no_baris,
+       CAST(DATE_FORMAT(s.paid_at_wib, '%Y%m%d') AS UNSIGNED) AS tanggal_key, s.paid_at_wib AS waktu_wib,
+       p.produk_key, COALESCE(pl.pelanggan_key, -1) AS pelanggan_key, tk.toko_kanal_key,
+       CAST(CASE WHEN s.voucher_excl > 0 THEN 
+COALESCE((SELECT k.kampanye_key FROM dim_kampanye k
+           WHERE k.kampanye_key > 0 AND DATE(s.paid_at_wib) BETWEEN k.tgl_mulai AND k.tgl_selesai
+             AND k.kanal_target IN ('Semua Kanal', 'Marketplace')
+           ORDER BY (k.kanal_target = 'Semua Kanal'), k.tgl_mulai DESC LIMIT 1), -1) ELSE -1 END AS SIGNED) AS kampanye_key,
+       CAST(-1 AS SIGNED) AS metode_bayar_key,
+       CAST(s.qty AS SIGNED) AS qty, s.unit_price_excl AS harga_satuan, s.voucher_excl AS diskon_excl, p.harga_pokok AS hpp_satuan,
+       s.fee_komisi_alokasi AS fee_komisi, s.fee_layanan_alokasi AS fee_layanan, CAST(0 AS SIGNED) AS qty_retur, CAST(0 AS DECIMAL(18,2)) AS nilai_retur
+FROM stg_s3_inv_item s
+JOIN map_produk mp ON mp.sumber = 'S3' AND mp.kode_sumber = s.seller_sku
+JOIN dim_produk p  ON p.material_no = mp.material_no AND DATE(s.paid_at_wib) BETWEEN p.tgl_efektif_awal AND p.tgl_efektif_akhir
+JOIN dim_toko_kanal tk ON tk.kode_toko_kanal = CASE s.channel WHEN 'marketplace_a' THEN 'MPL_A' ELSE 'MPL_B' END
+LEFT JOIN dim_pelanggan pl ON pl.mpl_buyer_hash = s.buyer_hash]]></sql><limit>0</limit><lookup/><execute_each_row>N</execute_each_row><variables_active>N</variables_active><lazy_conversion_active>N</lazy_conversion_active><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>120</xloc><yloc>180</yloc><draw>Y</draw></GUI></step><step><name>Hitung bersih, HPP, margin kotor</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+
+var penjualan_kotor = R2(qty * harga_satuan);
+var penjualan_bersih = R2(penjualan_kotor - diskon_excl);
+var hpp_total = (hpp_satuan == null) ? null : R2(qty * hpp_satuan);
+var margin_kotor = (hpp_total == null) ? null : R2(penjualan_bersih - hpp_total - fee_komisi - fee_layanan);
+]]></jsScript_script></jsScript></jsScripts><fields><field><name>penjualan_kotor</name><rename>penjualan_kotor</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>penjualan_bersih</name><rename>penjualan_bersih</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>hpp_total</name><rename>hpp_total</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>margin_kotor</name><rename>margin_kotor</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>460</xloc><yloc>180</yloc><draw>Y</draw></GUI></step><step><name>fact_penjualan</name><type>TableOutput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><schema/><table>fact_penjualan</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>sumber_sistem</column_name><stream_name>sumber_sistem</stream_name></field><field><column_name>no_transaksi</column_name><stream_name>no_transaksi</stream_name></field><field><column_name>no_baris</column_name><stream_name>no_baris</stream_name></field><field><column_name>tanggal_key</column_name><stream_name>tanggal_key</stream_name></field><field><column_name>waktu_transaksi_wib</column_name><stream_name>waktu_wib</stream_name></field><field><column_name>produk_key</column_name><stream_name>produk_key</stream_name></field><field><column_name>pelanggan_key</column_name><stream_name>pelanggan_key</stream_name></field><field><column_name>toko_kanal_key</column_name><stream_name>toko_kanal_key</stream_name></field><field><column_name>kampanye_key</column_name><stream_name>kampanye_key</stream_name></field><field><column_name>metode_bayar_key</column_name><stream_name>metode_bayar_key</stream_name></field><field><column_name>qty</column_name><stream_name>qty</stream_name></field><field><column_name>harga_satuan_excl_ppn</column_name><stream_name>harga_satuan</stream_name></field><field><column_name>penjualan_kotor_excl</column_name><stream_name>penjualan_kotor</stream_name></field><field><column_name>diskon_excl_ppn</column_name><stream_name>diskon_excl</stream_name></field><field><column_name>penjualan_bersih_excl</column_name><stream_name>penjualan_bersih</stream_name></field><field><column_name>harga_pokok_satuan</column_name><stream_name>hpp_satuan</stream_name></field><field><column_name>harga_pokok_total</column_name><stream_name>hpp_total</stream_name></field><field><column_name>fee_komisi</column_name><stream_name>fee_komisi</stream_name></field><field><column_name>fee_layanan</column_name><stream_name>fee_layanan</stream_name></field><field><column_name>margin_kotor</column_name><stream_name>margin_kotor</stream_name></field><field><column_name>qty_retur</column_name><stream_name>qty_retur</stream_name></field><field><column_name>nilai_retur_excl_ppn</column_name><stream_name>nilai_retur</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>780</xloc><yloc>180</yloc><draw>Y</draw></GUI></step>
+<step_error_handling/>
+<slave-step-copy-partition-distribution/><slave_transformation>N</slave_transformation>
+</transformation>

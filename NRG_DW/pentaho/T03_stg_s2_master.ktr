@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformation>
+<info><name>T03_stg_s2_master</name><description>Ekstrak master S2: store_master dan member (normalisasi HP + kota baku via ref_kota)</description><extended_description/><trans_version/>
+<trans_type>Normal</trans_type><trans_status>0</trans_status><directory>/</directory>
+<parameters><parameter><name>DATA_DIR</name><default_value>G:/My Drive/File Kuliah/Semester 7/data-warehouse/assignment/tugas kelompok/Data-20261013T041524Z-1-001/Data</default_value><description>Folder paket data (berisi S1_ECOM_DB, S2_POS_TOKO, ...)</description></parameter><parameter><name>DB_HOST</name><default_value>localhost</default_value><description>Host MySQL</description></parameter><parameter><name>DB_PORT</name><default_value>3306</default_value><description>Port MySQL</description></parameter><parameter><name>DB_USER</name><default_value>root</default_value><description>User MySQL</description></parameter><parameter><name>DB_PASS</name><default_value></default_value><description>Password MySQL</description></parameter><parameter><name>DW_DB</name><default_value>nrg_dw</default_value><description>Nama database data warehouse</description></parameter><parameter><name>ECOM_DB</name><default_value>nrg_ecom</default_value><description>Nama database OLTP situs web (S1)</description></parameter></parameters>
+<log><trans-log-table><connection/><schema/><table/><size_limit_lines/><interval/><timeout_days/></trans-log-table></log>
+<maxdate><connection/><table/><field/><offset>0.0</offset><maxdiff>0.0</maxdiff></maxdate>
+<size_rowset>10000</size_rowset><sleep_time_empty>50</sleep_time_empty><sleep_time_full>50</sleep_time_full>
+<unique_connections>N</unique_connections><feedback_shown>Y</feedback_shown><feedback_size>50000</feedback_size>
+<using_thread_priorities>Y</using_thread_priorities><shared_objects_file/><capture_step_performance>N</capture_step_performance>
+<step_performance_capturing_delay>1000</step_performance_capturing_delay><step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+<dependencies/><partitionschemas/><slaveservers/><clusterschemas/><created_user>kelompok4</created_user><created_date>2026/10/13 12:00:00.000</created_date>
+<modified_user>kelompok4</modified_user><modified_date>2026/10/13 12:00:00.000</modified_date></info>
+<notepads/>
+<connection><name>NRG_DW</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${DW_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<connection><name>NRG_ECOM</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
+<database>${ECOM_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
+<servername/><data_tablespace/><index_tablespace/><attributes>
+<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
+<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
+<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
+</attributes></connection>
+<order><hop><from>CSV store_master (S2)</from><to>Siapkan toko</to><enabled>Y</enabled></hop><hop><from>Siapkan toko</from><to>Kota baku toko</to><enabled>Y</enabled></hop><hop><from>Kota baku toko</from><to>Kota toko final</to><enabled>Y</enabled></hop><hop><from>Kota toko final</from><to>stg_s2_store</to><enabled>Y</enabled></hop><hop><from>CSV member (S2)</from><to>Normalkan HP dan kota member</to><enabled>Y</enabled></hop><hop><from>Normalkan HP dan kota member</from><to>Kota baku member</to><enabled>Y</enabled></hop><hop><from>Kota baku member</from><to>Kota member final</to><enabled>Y</enabled></hop><hop><from>Kota member final</from><to>stg_s2_member</to><enabled>Y</enabled></hop></order>
+<step><name>CSV store_master (S2)</name><type>TextFileInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
+<separator>,</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
+<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
+<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
+<noempty>Y</noempty><include>N</include><include_field></include_field>
+<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
+<add_to_result_filenames>N</add_to_result_filenames>
+<file><name>${DATA_DIR}/S2_POS_TOKO</name><filemask>store_master\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
+<filters/><fields><field><name>store_id</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>store_code</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>store_name</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>city</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>province</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>format_toko</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>opened_at</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
+<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
+<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
+<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
+<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
+<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>80</xloc><yloc>100</yloc><draw>Y</draw></GUI></step><step><name>Siapkan toko</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+
+var city_upper = T(city) == null ? null : T(city).toUpperCase().replace(/\s+/g, " ");
+var opened_d = T(opened_at) == null ? null : str2date(T(opened_at), "yyyy-MM-dd");
+]]></jsScript_script></jsScript></jsScripts><fields><field><name>city_upper</name><rename>city_upper</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>opened_d</name><rename>opened_d</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>290</xloc><yloc>100</yloc><draw>Y</draw></GUI></step><step><name>Kota baku toko</name><type>DBLookup</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><cache>Y</cache><cache_size>0</cache_size><cache_load_all>Y</cache_load_all><lookup><schema/><table>stg_ref_kota</table><orderby/><fail_on_multiple>N</fail_on_multiple><eat_row_on_failure>N</eat_row_on_failure><key><name>city_upper</name><field>alias_upper</field><condition>=</condition><name2/></key><value><name>kota_baku</name><rename>kota_lookup</rename><default/><type>String</type></value></lookup><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>490</xloc><yloc>100</yloc><draw>Y</draw></GUI></step><step><name>Kota toko final</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(city);]]></jsScript_script></jsScript></jsScripts><fields><field><name>kota_final</name><rename>kota_final</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>690</xloc><yloc>100</yloc><draw>Y</draw></GUI></step><step><name>stg_s2_store</name><type>TableOutput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><schema/><table>stg_s2_store</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>store_code</column_name><stream_name>store_code</stream_name></field><field><column_name>store_name</column_name><stream_name>store_name</stream_name></field><field><column_name>city_raw</column_name><stream_name>city</stream_name></field><field><column_name>kota_baku</column_name><stream_name>kota_final</stream_name></field><field><column_name>province</column_name><stream_name>province</stream_name></field><field><column_name>format_toko</column_name><stream_name>format_toko</stream_name></field><field><column_name>opened_at</column_name><stream_name>opened_d</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>890</xloc><yloc>100</yloc><draw>Y</draw></GUI></step><step><name>CSV member (S2)</name><type>TextFileInput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
+<separator>;</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
+<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
+<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
+<noempty>Y</noempty><include>N</include><include_field></include_field>
+<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
+<add_to_result_filenames>N</add_to_result_filenames>
+<file><name>${DATA_DIR}/S2_POS_TOKO</name><filemask>member\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
+<filters/><fields><field><name>member_no</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>member_name</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>hp</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>kota</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>join_date</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
+<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
+<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
+<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
+<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
+<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>80</xloc><yloc>260</yloc><draw>Y</draw></GUI></step><step><name>Normalkan HP dan kota member</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+
+var d = T(hp) == null ? "" : T(hp).replace(/[^0-9]/g, "");
+var phone_norm = null;
+if (d.length > 0) {
+    if (d.indexOf("62") == 0) phone_norm = d;
+    else if (d.charAt(0) == "0") phone_norm = "62" + d.substring(1);
+    else phone_norm = "62" + d;
+}
+
+var kota_upper = T(kota) == null ? null : T(kota).toUpperCase().replace(/\s+/g, " ");
+var join_d = T(join_date) == null ? null : str2date(T(join_date), "yyyy-MM-dd");
+]]></jsScript_script></jsScript></jsScripts><fields><field><name>phone_norm</name><rename>phone_norm</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>kota_upper</name><rename>kota_upper</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>join_d</name><rename>join_d</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>290</xloc><yloc>260</yloc><draw>Y</draw></GUI></step><step><name>Kota baku member</name><type>DBLookup</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><cache>Y</cache><cache_size>0</cache_size><cache_load_all>Y</cache_load_all><lookup><schema/><table>stg_ref_kota</table><orderby/><fail_on_multiple>N</fail_on_multiple><eat_row_on_failure>N</eat_row_on_failure><key><name>kota_upper</name><field>alias_upper</field><condition>=</condition><name2/></key><value><name>kota_baku</name><rename>kota_lookup</rename><default/><type>String</type></value></lookup><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>490</xloc><yloc>260</yloc><draw>Y</draw></GUI></step><step><name>Kota member final</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(kota);]]></jsScript_script></jsScript></jsScripts><fields><field><name>kota_final</name><rename>kota_final</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>690</xloc><yloc>260</yloc><draw>Y</draw></GUI></step><step><name>stg_s2_member</name><type>TableOutput</type><description/><distribute>Y</distribute>
+<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
+<connection>NRG_DW</connection><schema/><table>stg_s2_member</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>member_no</column_name><stream_name>member_no</stream_name></field><field><column_name>member_name</column_name><stream_name>member_name</stream_name></field><field><column_name>hp_raw</column_name><stream_name>hp</stream_name></field><field><column_name>phone_norm</column_name><stream_name>phone_norm</stream_name></field><field><column_name>kota_raw</column_name><stream_name>kota</stream_name></field><field><column_name>kota_baku</column_name><stream_name>kota_final</stream_name></field><field><column_name>join_date</column_name><stream_name>join_d</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
+<GUI><xloc>890</xloc><yloc>260</yloc><draw>Y</draw></GUI></step>
+<step_error_handling/>
+<slave-step-copy-partition-distribution/><slave_transformation>N</slave_transformation>
+</transformation>
