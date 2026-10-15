@@ -698,8 +698,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>368</xloc>
-      <yloc>240</yloc>
+      <xloc>896</xloc>
+      <yloc>640</yloc>
       <attributes_kjc/>
     </entry>
     <entry>
@@ -859,13 +859,13 @@
       <attributes_kjc/>
     </entry>
     <entry>
-      <name>Transformation</name>
+      <name>T07 dim_referensi</name>
       <description/>
       <type>TRANS</type>
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename/>
+      <filename>${Internal.Entry.Current.Directory}/T07_dim_referensi_v3.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -885,7 +885,7 @@
       <follow_abort_remote>N</follow_abort_remote>
       <create_parent_folder>N</create_parent_folder>
       <logging_remote_work>N</logging_remote_work>
-      <run_configuration/>
+      <run_configuration>Pentaho local</run_configuration>
       <suppress_result_data>N</suppress_result_data>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -893,8 +893,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1184</xloc>
-      <yloc>896</yloc>
+      <xloc>352</xloc>
+      <yloc>240</yloc>
       <attributes_kjc/>
     </entry>
   </entries>
@@ -954,24 +954,6 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>T06 Staging S1 Ecom</from>
-      <to>T07 Dimensi referensi</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
-      <from>T07 Dimensi referensi</from>
-      <to>T08 dim_pemasok</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
-    <hop>
       <from>T08 dim_pemasok</from>
       <to>T09 dim_produk</to>
       <from_nr>0</from_nr>
@@ -1001,6 +983,24 @@
     <hop>
       <from>T05 Staging S3 Marketplace</from>
       <to>T06 Staging S1 Ecom</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>T06 Staging S1 Ecom</from>
+      <to>T07 dim_referensi</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>T07 dim_referensi</from>
+      <to>T08 dim_pemasok</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>

@@ -521,6 +521,10 @@
         <attribute>N</attribute>
       </attribute>
       <attribute>
+        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
         <code>PORT_NUMBER</code>
         <attribute>3306</attribute>
       </attribute>
@@ -625,8 +629,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>576</xloc>
-      <yloc>32</yloc>
+      <xloc>720</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -674,8 +678,8 @@ var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(city);</jsScript_sc
       </output>
     </remotesteps>
     <GUI>
-      <xloc>750</xloc>
-      <yloc>100</yloc>
+      <xloc>944</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -741,8 +745,8 @@ var kota_upper = T(city) == null ? null : T(city).toUpperCase().replace(/\s+/g, 
       </output>
     </remotesteps>
     <GUI>
-      <xloc>368</xloc>
-      <yloc>112</yloc>
+      <xloc>464</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -838,8 +842,8 @@ var promo_u = T(promo_code) == null ? null : T(promo_code).toUpperCase().replace
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>224</yloc>
+      <xloc>720</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1138,8 +1142,8 @@ FROM stg_s1_customer</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>100</yloc>
+      <xloc>160</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1702,8 +1706,8 @@ FROM stg_s1_order_line</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>260</yloc>
+      <xloc>288</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1790,8 +1794,8 @@ FROM stg_s1_order_line</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>100</yloc>
+      <xloc>1168</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1922,8 +1926,8 @@ FROM stg_s1_order_line</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>640</xloc>
-      <yloc>260</yloc>
+      <xloc>1072</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

@@ -651,8 +651,8 @@ var fee_layanan_alok = R2(service_n * share);
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1340</xloc>
-      <yloc>200</yloc>
+      <xloc>848</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -693,8 +693,8 @@ var fee_layanan_alok = R2(service_n * share);
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1140</xloc>
-      <yloc>200</yloc>
+      <xloc>640</xloc>
+      <yloc>256</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -732,8 +732,8 @@ var fee_layanan_alok = R2(service_n * share);
       </output>
     </remotesteps>
     <GUI>
-      <xloc>920</xloc>
-      <yloc>120</yloc>
+      <xloc>592</xloc>
+      <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -837,7 +837,7 @@ var fee_layanan_alok = R2(service_n * share);
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
+      <xloc>128</xloc>
       <yloc>352</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1012,8 +1012,8 @@ var fee_layanan_alok = R2(service_n * share);
       </output>
     </remotesteps>
     <GUI>
-      <xloc>70</xloc>
-      <yloc>120</yloc>
+      <xloc>112</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1185,8 +1185,8 @@ var kota_upper = T(buyer_city) == null ? null : T(buyer_city).toUpperCase().repl
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
-      <yloc>120</yloc>
+      <xloc>336</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1233,8 +1233,8 @@ var kota_upper = T(buyer_city) == null ? null : T(buyer_city).toUpperCase().repl
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1540</xloc>
-      <yloc>200</yloc>
+      <xloc>928</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1282,8 +1282,8 @@ var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(buyer_city);</jsScr
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1740</xloc>
-      <yloc>200</yloc>
+      <xloc>1024</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1328,8 +1328,8 @@ var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(buyer_city);</jsScr
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1140</xloc>
-      <yloc>40</yloc>
+      <xloc>896</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1386,8 +1386,8 @@ var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(buyer_city);</jsScr
       </output>
     </remotesteps>
     <GUI>
-      <xloc>700</xloc>
-      <yloc>120</yloc>
+      <xloc>384</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1406,7 +1406,7 @@ var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(buyer_city);</jsScr
     <schema/>
     <table>stg_s3_inv_item</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -1510,8 +1510,8 @@ var kota_final = T(kota_lookup) != null ? T(kota_lookup) : T(buyer_city);</jsScr
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1940</xloc>
-      <yloc>200</yloc>
+      <xloc>1136</xloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

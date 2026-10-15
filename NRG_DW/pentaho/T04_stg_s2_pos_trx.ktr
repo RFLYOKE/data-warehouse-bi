@@ -642,8 +642,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>670</xloc>
-      <yloc>400</yloc>
+      <xloc>896</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -837,8 +837,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>80</yloc>
+      <xloc>304</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1022,8 +1022,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>260</yloc>
+      <xloc>304</xloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1162,8 +1162,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>400</yloc>
+      <xloc>304</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1211,8 +1211,8 @@ var is_split = jml_baris_bayar > 1 ? "Y" : "N";</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>860</xloc>
-      <yloc>400</yloc>
+      <xloc>1072</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1298,8 +1298,8 @@ var waktu_etl = new Date();
       </output>
     </remotesteps>
     <GUI>
-      <xloc>300</xloc>
-      <yloc>80</yloc>
+      <xloc>512</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1374,8 +1374,8 @@ var harga_n = NUM(unit_price_excl); var disc_n = NUM(disc_pct); if (disc_n == nu
       </output>
     </remotesteps>
     <GUI>
-      <xloc>300</xloc>
-      <yloc>260</yloc>
+      <xloc>512</xloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1423,8 +1423,8 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
       </output>
     </remotesteps>
     <GUI>
-      <xloc>300</xloc>
-      <yloc>400</yloc>
+      <xloc>512</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1467,8 +1467,8 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
       </output>
     </remotesteps>
     <GUI>
-      <xloc>510</xloc>
-      <yloc>80</yloc>
+      <xloc>736</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1509,8 +1509,8 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
       </output>
     </remotesteps>
     <GUI>
-      <xloc>490</xloc>
-      <yloc>400</yloc>
+      <xloc>704</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1577,8 +1577,8 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
       </output>
     </remotesteps>
     <GUI>
-      <xloc>730</xloc>
-      <yloc>140</yloc>
+      <xloc>944</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1597,7 +1597,7 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
     <schema/>
     <table>stg_s2_trx_header</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -1649,8 +1649,8 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
       </output>
     </remotesteps>
     <GUI>
-      <xloc>730</xloc>
-      <yloc>40</yloc>
+      <xloc>944</xloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1669,7 +1669,7 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
     <schema/>
     <table>stg_s2_trx_line</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -1717,8 +1717,8 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
       </output>
     </remotesteps>
     <GUI>
-      <xloc>520</xloc>
-      <yloc>260</yloc>
+      <xloc>736</xloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1737,7 +1737,7 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
     <schema/>
     <table>stg_s2_trx_payment</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -1777,8 +1777,8 @@ var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1050</xloc>
-      <yloc>400</yloc>
+      <xloc>1264</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

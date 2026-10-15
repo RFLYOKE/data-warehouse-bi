@@ -473,13 +473,13 @@
   </notepads>
   <connection>
     <name>NRG_DW</name>
-    <server>${DB_HOST}</server>
+    <server>localhost</server>
     <type>MYSQL</type>
     <access>Native</access>
-    <database>${DW_DB}</database>
-    <port>${DB_PORT}</port>
-    <username>${DB_USER}</username>
-    <password>${DB_PASS}</password>
+    <database>nrg_dw</database>
+    <port>3306</port>
+    <username>root</username>
+    <password>Encrypted </password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -495,6 +495,14 @@
       <attribute>
         <code>EXTRA_OPTION_MYSQL.connectionCollation</code>
         <attribute>utf8mb4_unicode_ci</attribute>
+      </attribute>
+      <attribute>
+        <code>EXTRA_OPTION_MYSQL.defaultFetchSize</code>
+        <attribute>500</attribute>
+      </attribute>
+      <attribute>
+        <code>EXTRA_OPTION_MYSQL.useCursorFetch</code>
+        <attribute>true</attribute>
       </attribute>
       <attribute>
         <code>EXTRA_OPTION_MYSQL.useSSL</code>
@@ -513,16 +521,20 @@
         <attribute>N</attribute>
       </attribute>
       <attribute>
-        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
-        <attribute>N</attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>3306</attribute>
       </attribute>
       <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>${DB_PORT}</attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
       </attribute>
       <attribute>
         <code>QUOTE_ALL_FIELDS</code>
         <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>STREAM_RESULTS</code>
+        <attribute>Y</attribute>
       </attribute>
       <attribute>
         <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
@@ -1346,7 +1358,7 @@ var kota_baku_c = T(kota_baku);
     <schema/>
     <table>stg_erp_pemasok</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -1406,7 +1418,7 @@ var kota_baku_c = T(kota_baku);
     <schema/>
     <table>stg_erp_produk</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -1486,7 +1498,7 @@ var kota_baku_c = T(kota_baku);
     <schema/>
     <table>stg_ref_kota</table>
     <commit>1000</commit>
-    <truncate>N</truncate>
+    <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
