@@ -1,67 +1,1239 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
-<info><name>T04_stg_s2_pos_trx</name><description>Ekstrak trx_header / trx_line / trx_payment 42 toko (wildcard regex); buang VOID; tanggal DD/MM/YYYY -> date; agregasi SPLIT</description><extended_description/><trans_version/>
-<trans_type>Normal</trans_type><trans_status>0</trans_status><directory>/</directory>
-<parameters><parameter><name>DATA_DIR</name><default_value>G:/My Drive/File Kuliah/Semester 7/data-warehouse/assignment/tugas kelompok/Data-20261013T041524Z-1-001/Data</default_value><description>Folder paket data (berisi S1_ECOM_DB, S2_POS_TOKO, ...)</description></parameter><parameter><name>DB_HOST</name><default_value>localhost</default_value><description>Host MySQL</description></parameter><parameter><name>DB_PORT</name><default_value>3306</default_value><description>Port MySQL</description></parameter><parameter><name>DB_USER</name><default_value>root</default_value><description>User MySQL</description></parameter><parameter><name>DB_PASS</name><default_value></default_value><description>Password MySQL</description></parameter><parameter><name>DW_DB</name><default_value>nrg_dw</default_value><description>Nama database data warehouse</description></parameter><parameter><name>ECOM_DB</name><default_value>nrg_ecom</default_value><description>Nama database OLTP situs web (S1)</description></parameter></parameters>
-<log><trans-log-table><connection/><schema/><table/><size_limit_lines/><interval/><timeout_days/></trans-log-table></log>
-<maxdate><connection/><table/><field/><offset>0.0</offset><maxdiff>0.0</maxdiff></maxdate>
-<size_rowset>10000</size_rowset><sleep_time_empty>50</sleep_time_empty><sleep_time_full>50</sleep_time_full>
-<unique_connections>N</unique_connections><feedback_shown>Y</feedback_shown><feedback_size>50000</feedback_size>
-<using_thread_priorities>Y</using_thread_priorities><shared_objects_file/><capture_step_performance>N</capture_step_performance>
-<step_performance_capturing_delay>1000</step_performance_capturing_delay><step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
-<dependencies/><partitionschemas/><slaveservers/><clusterschemas/><created_user>kelompok4</created_user><created_date>2026/10/13 12:00:00.000</created_date>
-<modified_user>kelompok4</modified_user><modified_date>2026/10/13 12:00:00.000</modified_date></info>
-<notepads/>
-<connection><name>NRG_DW</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
-<database>${DW_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
-<servername/><data_tablespace/><index_tablespace/><attributes>
-<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
-<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
-</attributes></connection>
-<connection><name>NRG_ECOM</name><server>${DB_HOST}</server><type>MYSQL</type><access>Native</access>
-<database>${ECOM_DB}</database><port>${DB_PORT}</port><username>${DB_USER}</username><password>${DB_PASS}</password>
-<servername/><data_tablespace/><index_tablespace/><attributes>
-<attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-<attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-<attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-<attribute><code>PORT_NUMBER</code><attribute>${DB_PORT}</attribute></attribute>
-<attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-<attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-<attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.useSSL</code><attribute>false</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code><attribute>true</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.characterEncoding</code><attribute>UTF-8</attribute></attribute>
-<attribute><code>EXTRA_OPTION_MYSQL.connectionCollation</code><attribute>utf8mb4_unicode_ci</attribute></attribute>
-</attributes></connection>
-<order><hop><from>CSV trx_header_TSxx (S2)</from><to>Konversi header</to><enabled>Y</enabled></hop><hop><from>Konversi header</from><to>Status NORMAL?</to><enabled>Y</enabled></hop><hop><from>Status NORMAL?</from><to>stg_s2_trx_header</to><enabled>Y</enabled></hop><hop><from>Status NORMAL?</from><to>rej_s2_void</to><enabled>Y</enabled></hop><hop><from>CSV trx_line_TSxx (S2)</from><to>Konversi line</to><enabled>Y</enabled></hop><hop><from>Konversi line</from><to>stg_s2_trx_line</to><enabled>Y</enabled></hop><hop><from>CSV trx_payment_TSxx (S2)</from><to>Konversi payment</to><enabled>Y</enabled></hop><hop><from>Konversi payment</from><to>Urutkan per trx</to><enabled>Y</enabled></hop><hop><from>Urutkan per trx</from><to>Agregasi pembayaran</to><enabled>Y</enabled></hop><hop><from>Agregasi pembayaran</from><to>Flag SPLIT</to><enabled>Y</enabled></hop><hop><from>Flag SPLIT</from><to>stg_s2_trx_payment</to><enabled>Y</enabled></hop></order>
-<step><name>CSV trx_header_TSxx (S2)</name><type>TextFileInput</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
-<separator>;</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
-<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
-<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
-<noempty>Y</noempty><include>N</include><include_field></include_field>
-<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
-<add_to_result_filenames>N</add_to_result_filenames>
-<file><name>${DATA_DIR}/S2_POS_TOKO</name><filemask>trx_header_TS[0-9]+\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
-<filters/><fields><field><name>trx_no</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>store_code</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>cashier_id</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>member_no</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>trx_date</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>payment_type</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>status</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
-<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
-<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
-<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
-<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
-<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>80</xloc><yloc>80</yloc><draw>Y</draw></GUI></step><step><name>Konversi header</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+  <info>
+    <name>T04_stg_s2_pos_trx</name>
+    <description>Ekstrak trx_header / trx_line / trx_payment 42 toko (wildcard regex); buang VOID; tanggal DD/MM/YYYY -> date; agregasi SPLIT</description>
+    <extended_description/>
+    <trans_version/>
+    <trans_type>Normal</trans_type>
+    <trans_status>0</trans_status>
+    <directory>/</directory>
+    <parameters>
+      <parameter>
+        <name>DATA_DIR</name>
+        <default_value>G:/My Drive/File Kuliah/Semester 7/data-warehouse/assignment/tugas kelompok/Data-20261013T041524Z-1-001/Data</default_value>
+        <description>Folder paket data (berisi S1_ECOM_DB, S2_POS_TOKO, ...)</description>
+      </parameter>
+      <parameter>
+        <name>DB_HOST</name>
+        <default_value>localhost</default_value>
+        <description>Host MySQL</description>
+      </parameter>
+      <parameter>
+        <name>DB_PASS</name>
+        <default_value/>
+        <description>Password MySQL</description>
+      </parameter>
+      <parameter>
+        <name>DB_PORT</name>
+        <default_value>3306</default_value>
+        <description>Port MySQL</description>
+      </parameter>
+      <parameter>
+        <name>DB_USER</name>
+        <default_value>root</default_value>
+        <description>User MySQL</description>
+      </parameter>
+      <parameter>
+        <name>DW_DB</name>
+        <default_value>nrg_dw</default_value>
+        <description>Nama database data warehouse</description>
+      </parameter>
+      <parameter>
+        <name>ECOM_DB</name>
+        <default_value>nrg_ecom</default_value>
+        <description>Nama database OLTP situs web (S1)</description>
+      </parameter>
+    </parameters>
+    <log>
+      <trans-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <size_limit_lines/>
+        <interval/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STATUS</id>
+          <enabled>Y</enabled>
+          <name>STATUS</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+          <subject/>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+          <subject/>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>STARTDATE</id>
+          <enabled>Y</enabled>
+          <name>STARTDATE</name>
+        </field>
+        <field>
+          <id>ENDDATE</id>
+          <enabled>Y</enabled>
+          <name>ENDDATE</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>DEPDATE</id>
+          <enabled>Y</enabled>
+          <name>DEPDATE</name>
+        </field>
+        <field>
+          <id>REPLAYDATE</id>
+          <enabled>Y</enabled>
+          <name>REPLAYDATE</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>Y</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+        <field>
+          <id>EXECUTING_SERVER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_SERVER</name>
+        </field>
+        <field>
+          <id>EXECUTING_USER</id>
+          <enabled>N</enabled>
+          <name>EXECUTING_USER</name>
+        </field>
+        <field>
+          <id>CLIENT</id>
+          <enabled>N</enabled>
+          <name>CLIENT</name>
+        </field>
+      </trans-log-table>
+      <perf-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <interval/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>SEQ_NR</id>
+          <enabled>Y</enabled>
+          <name>SEQ_NR</name>
+        </field>
+        <field>
+          <id>LOGDATE</id>
+          <enabled>Y</enabled>
+          <name>LOGDATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>INPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>INPUT_BUFFER_ROWS</name>
+        </field>
+        <field>
+          <id>OUTPUT_BUFFER_ROWS</id>
+          <enabled>Y</enabled>
+          <name>OUTPUT_BUFFER_ROWS</name>
+        </field>
+      </perf-log-table>
+      <channel-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>LOGGING_OBJECT_TYPE</id>
+          <enabled>Y</enabled>
+          <name>LOGGING_OBJECT_TYPE</name>
+        </field>
+        <field>
+          <id>OBJECT_NAME</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_NAME</name>
+        </field>
+        <field>
+          <id>OBJECT_COPY</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_COPY</name>
+        </field>
+        <field>
+          <id>REPOSITORY_DIRECTORY</id>
+          <enabled>Y</enabled>
+          <name>REPOSITORY_DIRECTORY</name>
+        </field>
+        <field>
+          <id>FILENAME</id>
+          <enabled>Y</enabled>
+          <name>FILENAME</name>
+        </field>
+        <field>
+          <id>OBJECT_ID</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_ID</name>
+        </field>
+        <field>
+          <id>OBJECT_REVISION</id>
+          <enabled>Y</enabled>
+          <name>OBJECT_REVISION</name>
+        </field>
+        <field>
+          <id>PARENT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>PARENT_CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>ROOT_CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>ROOT_CHANNEL_ID</name>
+        </field>
+      </channel-log-table>
+      <step-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>TRANSNAME</id>
+          <enabled>Y</enabled>
+          <name>TRANSNAME</name>
+        </field>
+        <field>
+          <id>STEPNAME</id>
+          <enabled>Y</enabled>
+          <name>STEPNAME</name>
+        </field>
+        <field>
+          <id>STEP_COPY</id>
+          <enabled>Y</enabled>
+          <name>STEP_COPY</name>
+        </field>
+        <field>
+          <id>LINES_READ</id>
+          <enabled>Y</enabled>
+          <name>LINES_READ</name>
+        </field>
+        <field>
+          <id>LINES_WRITTEN</id>
+          <enabled>Y</enabled>
+          <name>LINES_WRITTEN</name>
+        </field>
+        <field>
+          <id>LINES_UPDATED</id>
+          <enabled>Y</enabled>
+          <name>LINES_UPDATED</name>
+        </field>
+        <field>
+          <id>LINES_INPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_INPUT</name>
+        </field>
+        <field>
+          <id>LINES_OUTPUT</id>
+          <enabled>Y</enabled>
+          <name>LINES_OUTPUT</name>
+        </field>
+        <field>
+          <id>LINES_REJECTED</id>
+          <enabled>Y</enabled>
+          <name>LINES_REJECTED</name>
+        </field>
+        <field>
+          <id>ERRORS</id>
+          <enabled>Y</enabled>
+          <name>ERRORS</name>
+        </field>
+        <field>
+          <id>LOG_FIELD</id>
+          <enabled>N</enabled>
+          <name>LOG_FIELD</name>
+        </field>
+      </step-log-table>
+      <metrics-log-table>
+        <connection/>
+        <schema/>
+        <table/>
+        <timeout_days/>
+        <field>
+          <id>ID_BATCH</id>
+          <enabled>Y</enabled>
+          <name>ID_BATCH</name>
+        </field>
+        <field>
+          <id>CHANNEL_ID</id>
+          <enabled>Y</enabled>
+          <name>CHANNEL_ID</name>
+        </field>
+        <field>
+          <id>LOG_DATE</id>
+          <enabled>Y</enabled>
+          <name>LOG_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_DATE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DATE</name>
+        </field>
+        <field>
+          <id>METRICS_CODE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_CODE</name>
+        </field>
+        <field>
+          <id>METRICS_DESCRIPTION</id>
+          <enabled>Y</enabled>
+          <name>METRICS_DESCRIPTION</name>
+        </field>
+        <field>
+          <id>METRICS_SUBJECT</id>
+          <enabled>Y</enabled>
+          <name>METRICS_SUBJECT</name>
+        </field>
+        <field>
+          <id>METRICS_TYPE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_TYPE</name>
+        </field>
+        <field>
+          <id>METRICS_VALUE</id>
+          <enabled>Y</enabled>
+          <name>METRICS_VALUE</name>
+        </field>
+      </metrics-log-table>
+    </log>
+    <maxdate>
+      <connection/>
+      <table/>
+      <field/>
+      <offset>0.0</offset>
+      <maxdiff>0.0</maxdiff>
+    </maxdate>
+    <size_rowset>10000</size_rowset>
+    <sleep_time_empty>50</sleep_time_empty>
+    <sleep_time_full>50</sleep_time_full>
+    <unique_connections>N</unique_connections>
+    <feedback_shown>Y</feedback_shown>
+    <feedback_size>50000</feedback_size>
+    <using_thread_priorities>Y</using_thread_priorities>
+    <shared_objects_file/>
+    <capture_step_performance>N</capture_step_performance>
+    <step_performance_capturing_delay>1000</step_performance_capturing_delay>
+    <step_performance_capturing_size_limit>100</step_performance_capturing_size_limit>
+    <dependencies>
+    </dependencies>
+    <partitionschemas>
+    </partitionschemas>
+    <slaveservers>
+    </slaveservers>
+    <clusterschemas>
+    </clusterschemas>
+    <created_user>kelompok4</created_user>
+    <created_date>2026/10/13 12:00:00.000</created_date>
+    <modified_user>kelompok4</modified_user>
+    <modified_date>2026/10/13 12:00:00.000</modified_date>
+    <key_for_session_key>H4sIAAAAAAAA/wMAAAAAAAAAAAA=</key_for_session_key>
+    <is_key_private>N</is_key_private>
+  </info>
+  <notepads>
+  </notepads>
+  <connection>
+    <name>NRG_DW</name>
+    <server>${DB_HOST}</server>
+    <type>MYSQL</type>
+    <access>Native</access>
+    <database>${DW_DB}</database>
+    <port>${DB_PORT}</port>
+    <username>${DB_USER}</username>
+    <password>${DB_PASS}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>EXTRA_OPTION_MYSQL.allowPublicKeyRetrieval</code>
+        <attribute>true</attribute>
+      </attribute>
+      <attribute>
+        <code>EXTRA_OPTION_MYSQL.characterEncoding</code>
+        <attribute>UTF-8</attribute>
+      </attribute>
+      <attribute>
+        <code>EXTRA_OPTION_MYSQL.connectionCollation</code>
+        <attribute>utf8mb4_unicode_ci</attribute>
+      </attribute>
+      <attribute>
+        <code>EXTRA_OPTION_MYSQL.useSSL</code>
+        <attribute>false</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>${DB_PORT}</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
+  <order>
+    <hop>
+      <from>CSV trx_header_TSxx (S2)</from>
+      <to>Konversi header</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Konversi header</from>
+      <to>Status NORMAL?</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Status NORMAL?</from>
+      <to>stg_s2_trx_header</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Status NORMAL?</from>
+      <to>rej_s2_void</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CSV trx_line_TSxx (S2)</from>
+      <to>Konversi line</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Konversi line</from>
+      <to>stg_s2_trx_line</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CSV trx_payment_TSxx (S2)</from>
+      <to>Konversi payment</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Konversi payment</from>
+      <to>Urutkan per trx</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Urutkan per trx</from>
+      <to>Agregasi pembayaran</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Agregasi pembayaran</from>
+      <to>Flag SPLIT</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Flag SPLIT</from>
+      <to>stg_s2_trx_payment</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <step>
+    <name>Agregasi pembayaran</name>
+    <type>GroupBy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <all_rows>N</all_rows>
+    <ignore_aggregate>N</ignore_aggregate>
+    <field_ignore/>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>grp</prefix>
+    <add_linenr>N</add_linenr>
+    <linenr_fieldname/>
+    <give_back_row>N</give_back_row>
+    <group>
+      <field>
+        <name>trx_no</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <aggregate>jml_baris_bayar</aggregate>
+        <subject>method</subject>
+        <type>COUNT_ALL</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>total_bayar</aggregate>
+        <subject>amount_n</subject>
+        <type>SUM</type>
+        <valuefield/>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>670</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>CSV trx_header_TSxx (S2)</name>
+    <type>TextFileInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <accept_filenames>N</accept_filenames>
+    <passing_through_fields>N</passing_through_fields>
+    <accept_field/>
+    <accept_stepname/>
+    <separator>;</separator>
+    <enclosure>"</enclosure>
+    <enclosure_breaks>N</enclosure_breaks>
+    <escapechar/>
+    <header>Y</header>
+    <nr_headerlines>1</nr_headerlines>
+    <footer>N</footer>
+    <nr_footerlines>1</nr_footerlines>
+    <line_wrapped>N</line_wrapped>
+    <nr_wraps>1</nr_wraps>
+    <layout_paged>N</layout_paged>
+    <nr_lines_per_page>80</nr_lines_per_page>
+    <nr_lines_doc_header>0</nr_lines_doc_header>
+    <noempty>Y</noempty>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <rownumByFile>N</rownumByFile>
+    <rownum_field/>
+    <format>mixed</format>
+    <encoding>UTF-8</encoding>
+    <length>Characters</length>
+    <add_to_result_filenames>N</add_to_result_filenames>
+    <file>
+      <name>D:\pdi-ce-10.2.0.0-222\Tugas Kelompok Data Warehouse\Data\S2_POS_TOKO\</name>
+      <filemask>^trx_header_TS(0[1-9]|[1-3][0-9]|4[0-2])\.csv$</filemask>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+      <type>CSV</type>
+      <compression>None</compression>
+    </file>
+    <filters>
+    </filters>
+    <fields>
+      <field>
+        <name>trx_no</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>store_code</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>cashier_id</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>member_no</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>trx_date</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>payment_type</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>status</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <error_ignored>N</error_ignored>
+    <skip_bad_files>N</skip_bad_files>
+    <file_error_field/>
+    <file_error_message_field/>
+    <error_line_skipped>N</error_line_skipped>
+    <error_count_field/>
+    <error_fields_field/>
+    <error_text_field/>
+    <bad_line_files_destination_directory/>
+    <bad_line_files_extension/>
+    <error_line_files_destination_directory/>
+    <error_line_files_extension/>
+    <line_number_files_destination_directory/>
+    <line_number_files_extension/>
+    <date_format_lenient>Y</date_format_lenient>
+    <date_format_locale>en_US</date_format_locale>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>CSV trx_line_TSxx (S2)</name>
+    <type>TextFileInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <accept_filenames>N</accept_filenames>
+    <passing_through_fields>N</passing_through_fields>
+    <accept_field/>
+    <accept_stepname/>
+    <separator>;</separator>
+    <enclosure>"</enclosure>
+    <enclosure_breaks>N</enclosure_breaks>
+    <escapechar/>
+    <header>Y</header>
+    <nr_headerlines>1</nr_headerlines>
+    <footer>N</footer>
+    <nr_footerlines>1</nr_footerlines>
+    <line_wrapped>N</line_wrapped>
+    <nr_wraps>1</nr_wraps>
+    <layout_paged>N</layout_paged>
+    <nr_lines_per_page>80</nr_lines_per_page>
+    <nr_lines_doc_header>0</nr_lines_doc_header>
+    <noempty>Y</noempty>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <rownumByFile>N</rownumByFile>
+    <rownum_field/>
+    <format>mixed</format>
+    <encoding>UTF-8</encoding>
+    <length>Characters</length>
+    <add_to_result_filenames>N</add_to_result_filenames>
+    <file>
+      <name>D:\pdi-ce-10.2.0.0-222\Tugas Kelompok Data Warehouse\Data\S2_POS_TOKO\</name>
+      <filemask>^trx_line_TS(0[1-9]|[1-3][0-9]|4[0-2])\.csv$</filemask>
+      <exclude_filemask/>
+      <file_required>Y</file_required>
+      <include_subfolders>N</include_subfolders>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+      <type>CSV</type>
+      <compression>None</compression>
+    </file>
+    <filters>
+    </filters>
+    <fields>
+      <field>
+        <name>trx_no</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>line_seq</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>item_code</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>qty</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>unit_price_excl</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>disc_pct</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <error_ignored>N</error_ignored>
+    <skip_bad_files>N</skip_bad_files>
+    <file_error_field/>
+    <file_error_message_field/>
+    <error_line_skipped>N</error_line_skipped>
+    <error_count_field/>
+    <error_fields_field/>
+    <error_text_field/>
+    <bad_line_files_destination_directory/>
+    <bad_line_files_extension/>
+    <error_line_files_destination_directory/>
+    <error_line_files_extension/>
+    <line_number_files_destination_directory/>
+    <line_number_files_extension/>
+    <date_format_lenient>Y</date_format_lenient>
+    <date_format_locale>en_US</date_format_locale>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>260</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>CSV trx_payment_TSxx (S2)</name>
+    <type>TextFileInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <accept_filenames>N</accept_filenames>
+    <passing_through_fields>N</passing_through_fields>
+    <accept_field/>
+    <accept_stepname/>
+    <separator>;</separator>
+    <enclosure>"</enclosure>
+    <enclosure_breaks>N</enclosure_breaks>
+    <escapechar/>
+    <header>Y</header>
+    <nr_headerlines>1</nr_headerlines>
+    <footer>N</footer>
+    <nr_footerlines>1</nr_footerlines>
+    <line_wrapped>N</line_wrapped>
+    <nr_wraps>1</nr_wraps>
+    <layout_paged>N</layout_paged>
+    <nr_lines_per_page>80</nr_lines_per_page>
+    <nr_lines_doc_header>0</nr_lines_doc_header>
+    <noempty>Y</noempty>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <rownumByFile>N</rownumByFile>
+    <rownum_field/>
+    <format>mixed</format>
+    <encoding>UTF-8</encoding>
+    <length>Characters</length>
+    <add_to_result_filenames>N</add_to_result_filenames>
+    <file>
+      <name>D:\pdi-ce-10.2.0.0-222\Tugas Kelompok Data Warehouse\Data\S2_POS_TOKO\</name>
+      <filemask>^trx_payment_TS(0[1-9]|[1-3][0-9]|4[0-2])\.csv$</filemask>
+      <exclude_filemask/>
+      <file_required>Y</file_required>
+      <include_subfolders>N</include_subfolders>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+      <type>CSV</type>
+      <compression>None</compression>
+    </file>
+    <filters>
+    </filters>
+    <fields>
+      <field>
+        <name>trx_no</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>method</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>amount</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <ifnull/>
+        <position>-1</position>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>both</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <error_ignored>N</error_ignored>
+    <skip_bad_files>N</skip_bad_files>
+    <file_error_field/>
+    <file_error_message_field/>
+    <error_line_skipped>N</error_line_skipped>
+    <error_count_field/>
+    <error_fields_field/>
+    <error_text_field/>
+    <bad_line_files_destination_directory/>
+    <bad_line_files_extension/>
+    <error_line_files_destination_directory/>
+    <error_line_files_extension/>
+    <line_number_files_destination_directory/>
+    <line_number_files_extension/>
+    <date_format_lenient>Y</date_format_lenient>
+    <date_format_locale>en_US</date_format_locale>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>80</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Flag SPLIT</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script</jsScript_name>
+        <jsScript_script>
+function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
+function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
+function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
+function R2(x) { return Math.round(x * 100) / 100; }
+var is_split = jml_baris_bayar > 1 ? "Y" : "N";</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>is_split</name>
+        <rename>is_split</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>860</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Konversi header</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script</jsScript_name>
+        <jsScript_script>
 function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
 function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
 function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
@@ -72,35 +1244,83 @@ var status_u = T(status) == null ? null : T(status).toUpperCase();
 var member_c = T(member_no);
 var payment_u = T(payment_type) == null ? null : T(payment_type).toUpperCase();
 var waktu_etl = new Date();
-]]></jsScript_script></jsScript></jsScripts><fields><field><name>trx_date_d</name><rename>trx_date_d</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>status_u</name><rename>status_u</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>member_c</name><rename>member_c</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>payment_u</name><rename>payment_u</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>waktu_etl</name><rename>waktu_etl</rename><type>Date</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>300</xloc><yloc>80</yloc><draw>Y</draw></GUI></step><step><name>Status NORMAL?</name><type>FilterRows</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<send_true_to>stg_s2_trx_header</send_true_to><send_false_to>rej_s2_void</send_false_to><compare><condition><negated>N</negated><leftvalue>status_u</leftvalue><function>=</function><rightvalue/><value><name>constant</name><type>String</type><text>NORMAL</text><length>-1</length><precision>-1</precision><isnull>N</isnull><mask/></value></condition></compare><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>510</xloc><yloc>80</yloc><draw>Y</draw></GUI></step><step><name>stg_s2_trx_header</name><type>TableOutput</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<connection>NRG_DW</connection><schema/><table>stg_s2_trx_header</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>trx_no</column_name><stream_name>trx_no</stream_name></field><field><column_name>store_code</column_name><stream_name>store_code</stream_name></field><field><column_name>cashier_id</column_name><stream_name>cashier_id</stream_name></field><field><column_name>member_no</column_name><stream_name>member_c</stream_name></field><field><column_name>trx_date</column_name><stream_name>trx_date_d</stream_name></field><field><column_name>payment_type</column_name><stream_name>payment_u</stream_name></field><field><column_name>status</column_name><stream_name>status_u</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>730</xloc><yloc>40</yloc><draw>Y</draw></GUI></step><step><name>rej_s2_void</name><type>TableOutput</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<connection>NRG_DW</connection><schema/><table>rej_s2_void</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>trx_no</column_name><stream_name>trx_no</stream_name></field><field><column_name>store_code</column_name><stream_name>store_code</stream_name></field><field><column_name>trx_date</column_name><stream_name>trx_date_d</stream_name></field><field><column_name>payment_type</column_name><stream_name>payment_u</stream_name></field><field><column_name>status</column_name><stream_name>status_u</stream_name></field><field><column_name>waktu_etl</column_name><stream_name>waktu_etl</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>730</xloc><yloc>140</yloc><draw>Y</draw></GUI></step><step><name>CSV trx_line_TSxx (S2)</name><type>TextFileInput</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
-<separator>;</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
-<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
-<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
-<noempty>Y</noempty><include>N</include><include_field></include_field>
-<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
-<add_to_result_filenames>N</add_to_result_filenames>
-<file><name>${DATA_DIR}/S2_POS_TOKO</name><filemask>trx_line_TS[0-9]+\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
-<filters/><fields><field><name>trx_no</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>line_seq</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>item_code</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>qty</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>unit_price_excl</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>disc_pct</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
-<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
-<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
-<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
-<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
-<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>80</xloc><yloc>260</yloc><draw>Y</draw></GUI></step><step><name>Konversi line</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>trx_date_d</name>
+        <rename>trx_date_d</rename>
+        <type>Date</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>status_u</name>
+        <rename>status_u</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>member_c</name>
+        <rename>member_c</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>payment_u</name>
+        <rename>payment_u</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>waktu_etl</name>
+        <rename>waktu_etl</rename>
+        <type>Date</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>300</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Konversi line</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script</jsScript_name>
+        <jsScript_script>
 function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
 function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
 function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
@@ -108,52 +1328,464 @@ function R2(x) { return Math.round(x * 100) / 100; }
 
 var line_seq_i = INT(line_seq); var qty_i = INT(qty);
 var harga_n = NUM(unit_price_excl); var disc_n = NUM(disc_pct); if (disc_n == null) disc_n = 0;
-]]></jsScript_script></jsScript></jsScripts><fields><field><name>line_seq_i</name><rename>line_seq_i</rename><type>Integer</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>qty_i</name><rename>qty_i</rename><type>Integer</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>harga_n</name><rename>harga_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field><field><name>disc_n</name><rename>disc_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>300</xloc><yloc>260</yloc><draw>Y</draw></GUI></step><step><name>stg_s2_trx_line</name><type>TableOutput</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<connection>NRG_DW</connection><schema/><table>stg_s2_trx_line</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>trx_no</column_name><stream_name>trx_no</stream_name></field><field><column_name>line_seq</column_name><stream_name>line_seq_i</stream_name></field><field><column_name>item_code</column_name><stream_name>item_code</stream_name></field><field><column_name>qty</column_name><stream_name>qty_i</stream_name></field><field><column_name>unit_price_excl</column_name><stream_name>harga_n</stream_name></field><field><column_name>disc_pct</column_name><stream_name>disc_n</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>520</xloc><yloc>260</yloc><draw>Y</draw></GUI></step><step><name>CSV trx_payment_TSxx (S2)</name><type>TextFileInput</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<accept_filenames>N</accept_filenames><passing_through_fields>N</passing_through_fields><accept_stepname/><accept_field/>
-<separator>;</separator><enclosure>"</enclosure><enclosure_breaks>N</enclosure_breaks><escapechar/><header>Y</header>
-<nr_headerlines>1</nr_headerlines><footer>N</footer><nr_footerlines>1</nr_footerlines><line_wrapped>N</line_wrapped><nr_wraps>1</nr_wraps>
-<layout_paged>N</layout_paged><nr_lines_per_page>80</nr_lines_per_page><nr_lines_doc_header>0</nr_lines_doc_header>
-<noempty>Y</noempty><include>N</include><include_field></include_field>
-<rownum>N</rownum><rownumByFile>N</rownumByFile><rownum_field/><format>mixed</format><encoding>UTF-8</encoding>
-<add_to_result_filenames>N</add_to_result_filenames>
-<file><name>${DATA_DIR}/S2_POS_TOKO</name><filemask>trx_payment_TS[0-9]+\.csv</filemask><exclude_filemask/><file_required>Y</file_required><include_subfolders>N</include_subfolders><type>CSV</type><compression>None</compression></file>
-<filters/><fields><field><name>trx_no</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>method</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field><field><name>amount</name><type>String</type><format></format><currency/><decimal/><group/><nullif/><ifnull/><position/><length>-1</length><precision>-1</precision><trim_type>both</trim_type><repeat>N</repeat></field></fields><limit>0</limit><error_ignored>N</error_ignored><skip_bad_files>N</skip_bad_files>
-<file_error_field/><file_error_message_field/><error_line_skipped>N</error_line_skipped><error_count_field/><error_fields_field/>
-<error_text_field/><bad_line_files_destination_directory/><bad_line_files_extension/><error_line_files_destination_directory/>
-<error_line_files_extension/><line_number_files_destination_directory/><line_number_files_extension/><date_format_lenient>Y</date_format_lenient>
-<date_format_locale>en_US</date_format_locale><shortFileFieldName/><pathFieldName/><hiddenFieldName/><lastModificationTimeFieldName/>
-<uriNameFieldName/><rootUriNameFieldName/><extensionFieldName/><sizeFieldName/><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>80</xloc><yloc>400</yloc><draw>Y</draw></GUI></step><step><name>Konversi payment</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>line_seq_i</name>
+        <rename>line_seq_i</rename>
+        <type>Integer</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>qty_i</name>
+        <rename>qty_i</rename>
+        <type>Integer</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>harga_n</name>
+        <rename>harga_n</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>disc_n</name>
+        <rename>disc_n</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>300</xloc>
+      <yloc>260</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Konversi payment</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script</jsScript_name>
+        <jsScript_script>
 function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
 function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
 function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
 function R2(x) { return Math.round(x * 100) / 100; }
-var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;]]></jsScript_script></jsScript></jsScripts><fields><field><name>amount_n</name><rename>amount_n</rename><type>Number</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>300</xloc><yloc>400</yloc><draw>Y</draw></GUI></step><step><name>Urutkan per trx</name><type>SortRows</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<directory>%%java.io.tmpdir%%</directory><prefix>out</prefix><sort_size>1000000</sort_size><free_memory/><compress>N</compress><compress_variable/><unique_rows>N</unique_rows><fields><field><name>trx_no</name><ascending>Y</ascending><case_sensitive>N</case_sensitive><collator_enabled>N</collator_enabled><collator_strength>0</collator_strength><presorted>N</presorted></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>490</xloc><yloc>400</yloc><draw>Y</draw></GUI></step><step><name>Agregasi pembayaran</name><type>GroupBy</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<all_rows>N</all_rows><ignore_aggregate>N</ignore_aggregate><field_ignore/><directory>%%java.io.tmpdir%%</directory><prefix>grp</prefix><add_linenr>N</add_linenr><linenr_fieldname/><give_back_row>N</give_back_row><group><field><name>trx_no</name></field></group><fields><field><aggregate>jml_baris_bayar</aggregate><subject>method</subject><type>COUNT_ALL</type><valuefield/></field><field><aggregate>total_bayar</aggregate><subject>amount_n</subject><type>SUM</type><valuefield/></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>670</xloc><yloc>400</yloc><draw>Y</draw></GUI></step><step><name>Flag SPLIT</name><type>ScriptValueMod</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<compatible>N</compatible><optimizationLevel>9</optimizationLevel><jsScripts><jsScript><jsScript_type>0</jsScript_type><jsScript_name>Script</jsScript_name><jsScript_script><![CDATA[
-function T(x) { if (x == null) return null; var s = ("" + x).replace(/^\s+|\s+$/g, ""); return s.length == 0 ? null : s; }
-function NUM(x) { var s = T(x); return s == null ? null : parseFloat(s); }
-function INT(x) { var s = T(x); return s == null ? null : parseInt(s, 10); }
-function R2(x) { return Math.round(x * 100) / 100; }
-var is_split = jml_baris_bayar > 1 ? "Y" : "N";]]></jsScript_script></jsScript></jsScripts><fields><field><name>is_split</name><rename>is_split</rename><type>String</type><length>-1</length><precision>-1</precision><replace>N</replace></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>860</xloc><yloc>400</yloc><draw>Y</draw></GUI></step><step><name>stg_s2_trx_payment</name><type>TableOutput</type><description/><distribute>Y</distribute>
-<custom_distribution/><copies>1</copies><partitioning><method>none</method><schema_name/></partitioning>
-<connection>NRG_DW</connection><schema/><table>stg_s2_trx_payment</table><commit>1000</commit><truncate>N</truncate><ignore_errors>N</ignore_errors><use_batch>Y</use_batch><specify_fields>Y</specify_fields><partitioning_enabled>N</partitioning_enabled><partitioning_field/><partitioning_daily>N</partitioning_daily><partitioning_monthly>Y</partitioning_monthly><tablename_in_field>N</tablename_in_field><tablename_field/><tablename_in_table>Y</tablename_in_table><return_keys>N</return_keys><return_field/><fields><field><column_name>trx_no</column_name><stream_name>trx_no</stream_name></field><field><column_name>jml_baris_bayar</column_name><stream_name>jml_baris_bayar</stream_name></field><field><column_name>total_bayar</column_name><stream_name>total_bayar</stream_name></field><field><column_name>is_split</column_name><stream_name>is_split</stream_name></field></fields><cluster_schema/><remotesteps><input/><output/></remotesteps>
-<GUI><xloc>1050</xloc><yloc>400</yloc><draw>Y</draw></GUI></step>
-<step_error_handling/>
-<slave-step-copy-partition-distribution/><slave_transformation>N</slave_transformation>
+var amount_n = NUM(amount); if (amount_n == null) amount_n = 0;</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>amount_n</name>
+        <rename>amount_n</rename>
+        <type>Number</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>300</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Status NORMAL?</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>stg_s2_trx_header</send_true_to>
+    <send_false_to>rej_s2_void</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>status_u</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>NORMAL</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>510</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Urutkan per trx</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>trx_no</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>490</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>rej_s2_void</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>NRG_DW</connection>
+    <schema/>
+    <table>rej_s2_void</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>trx_no</column_name>
+        <stream_name>trx_no</stream_name>
+      </field>
+      <field>
+        <column_name>store_code</column_name>
+        <stream_name>store_code</stream_name>
+      </field>
+      <field>
+        <column_name>trx_date</column_name>
+        <stream_name>trx_date_d</stream_name>
+      </field>
+      <field>
+        <column_name>payment_type</column_name>
+        <stream_name>payment_u</stream_name>
+      </field>
+      <field>
+        <column_name>status</column_name>
+        <stream_name>status_u</stream_name>
+      </field>
+      <field>
+        <column_name>waktu_etl</column_name>
+        <stream_name>waktu_etl</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>730</xloc>
+      <yloc>140</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>stg_s2_trx_header</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>NRG_DW</connection>
+    <schema/>
+    <table>stg_s2_trx_header</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>trx_no</column_name>
+        <stream_name>trx_no</stream_name>
+      </field>
+      <field>
+        <column_name>store_code</column_name>
+        <stream_name>store_code</stream_name>
+      </field>
+      <field>
+        <column_name>cashier_id</column_name>
+        <stream_name>cashier_id</stream_name>
+      </field>
+      <field>
+        <column_name>member_no</column_name>
+        <stream_name>member_c</stream_name>
+      </field>
+      <field>
+        <column_name>trx_date</column_name>
+        <stream_name>trx_date_d</stream_name>
+      </field>
+      <field>
+        <column_name>payment_type</column_name>
+        <stream_name>payment_u</stream_name>
+      </field>
+      <field>
+        <column_name>status</column_name>
+        <stream_name>status_u</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>730</xloc>
+      <yloc>40</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>stg_s2_trx_line</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>NRG_DW</connection>
+    <schema/>
+    <table>stg_s2_trx_line</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>trx_no</column_name>
+        <stream_name>trx_no</stream_name>
+      </field>
+      <field>
+        <column_name>line_seq</column_name>
+        <stream_name>line_seq_i</stream_name>
+      </field>
+      <field>
+        <column_name>item_code</column_name>
+        <stream_name>item_code</stream_name>
+      </field>
+      <field>
+        <column_name>qty</column_name>
+        <stream_name>qty_i</stream_name>
+      </field>
+      <field>
+        <column_name>unit_price_excl</column_name>
+        <stream_name>harga_n</stream_name>
+      </field>
+      <field>
+        <column_name>disc_pct</column_name>
+        <stream_name>disc_n</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>520</xloc>
+      <yloc>260</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>stg_s2_trx_payment</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>NRG_DW</connection>
+    <schema/>
+    <table>stg_s2_trx_payment</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>trx_no</column_name>
+        <stream_name>trx_no</stream_name>
+      </field>
+      <field>
+        <column_name>jml_baris_bayar</column_name>
+        <stream_name>jml_baris_bayar</stream_name>
+      </field>
+      <field>
+        <column_name>total_bayar</column_name>
+        <stream_name>total_bayar</stream_name>
+      </field>
+      <field>
+        <column_name>is_split</column_name>
+        <stream_name>is_split</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1050</xloc>
+      <yloc>400</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step_error_handling>
+  </step_error_handling>
+  <slave-step-copy-partition-distribution>
+  </slave-step-copy-partition-distribution>
+  <slave_transformation>N</slave_transformation>
+  <attributes/>
 </transformation>
